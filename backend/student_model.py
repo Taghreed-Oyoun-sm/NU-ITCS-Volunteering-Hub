@@ -8,7 +8,7 @@ class Student(Base):
 
     student_id = Column(String(50), primary_key=True)
     name = Column(String(255), nullable=False)
-    email = Column(String(255), unique=True, nullable=False)
+    email = Column(String(255), unique=True, index= True, nullable=False)
     hashed_password = Column(String(255), nullable=False)
     year = Column(String(50), nullable=False)
     track = Column(String(50), nullable=False)
