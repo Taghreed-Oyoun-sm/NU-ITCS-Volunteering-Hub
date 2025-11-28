@@ -7,12 +7,15 @@
 html{
     height: 100%;
 }
-body{
-    background-color: #def1ff;
-    background: linear-gradient(to bottom,#8cc2e6,#def1ff );
-    height: 100%;
-    margin: 0;
-    padding: 0;
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 300vh;
+    background: linear-gradient(to bottom, #8cc2e6, #def1ff, #8cc2e6);    
+    z-index: -1;
 }
 .Container{
     background: #ffffff;
@@ -118,6 +121,7 @@ button{
 button:hover{
     text-decoration: underline;
     color: #8cc2e6;
+    cursor: pointer;
 }
 .navbar{
     background: rgba(255, 255,255, 0.7);
@@ -128,4 +132,29 @@ button:hover{
 .navdiv{
     display:flex;
     align-items: center;
+}
+select {
+    color: inherit;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #757575;
+    padding-left: 1.5rem;
+    font-size: 15px;
+    cursor: pointer;
+}
+select:focus {
+    background-color: transparent;
+    outline: transparent;
+    border-bottom: 2px solid hsl(40, 78%, 70%);
+}
+select:focus ~ label {
+    top: -3em;
+    color: hsl(40, 78%, 70%);
+    font-size: 15px;
+}
+select:valid ~ label {
+    top: -3em;
+    color: hsl(40, 78%, 70%);
+    font-size: 15px;
 }
