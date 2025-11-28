@@ -22,7 +22,7 @@ class Year(str, Enum):
 
 #schema for signup input
 class UserCreate(BaseModel):
-    student_id: str
+    student_id: int
     name: str = Field(..., min_length=2)
     email: EmailStr
     year: Year
@@ -45,7 +45,7 @@ class UserCreate(BaseModel):
     
 # Schema for output
 class UserOut(BaseModel):
-    student_id: str
+    student_id: int
     name: str
     email: EmailStr
     year: Year
