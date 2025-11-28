@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Novathink</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<header>
+
+</header>
+<body>
+    <nav class="navbar">
+        <div class="navdiv">
+            <div class="logo"><img src="Novathink_OwlNBG.png" alt="Owl" width="40"></div>
+            <div class="logo2"><img src="Novathink-TitleNBG.png" alt="title" width="100"></div>
+        </div>
+    </nav>
+    <div class="Container" id="signin">
+        <h1 class="form-title">Sign In</h1>
+        <form method="post" action="">
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" name="uName" id="uName" placeholder="User Name">
+                <label for="uName">User Name</label>
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" name="password" id="password" placeholder="Password" required>
+                <label for="pass">Password</label>
+            </div>
+            <input type="submit" class="btn" value="Sign In" name="signIn">
+        </form>
+        <div class="links">
+            <p>Don't Have An Account?</p>
+            <button id="signUpButton">Sign Up</button>
+        </div>   
+    </div>
+
+    <div class="Container" id="signup" style="display: none;">
+        <h1 class="form-title">Register</h1>
+        <form method="post" action="">
+            <div class="input-group">
+                <i class="fas fa-address-card"></i>
+                <input type="text" name="ID" id="ID" placeholder="ID">
+                <label for="ID">Student/Dr/Club ID</label>
+            </div>
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" name="uName" id="uName" placeholder="User Name">
+                <label for="uName">User Name</label>
+            </div>
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="text" name="email" id="email" placeholder="Email">
+                <label for="uName">Email</label>
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" name="password" id="password" placeholder="Password" required>
+                <label for="pass">Password</label>
+            </div>
+            <input type="submit" class="btn" value="Sign Up" name="signIn">
+        </form>
+        <div class="links">
+            <p>Already Have Account?</p>
+            <button id="signInButton">Sign In</button>
+        </div>     
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
