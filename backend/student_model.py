@@ -6,7 +6,7 @@ Base = declarative_base()
 class Student(Base):
     __tablename__ = "Student"
 
-    student_id = Column(String(50), primary_key=True)
+    student_id = Column(Integer, primary_key=True)
     name = Column(String(255), nullable=False)
     email = Column(String(255), unique=True, index= True, nullable=False)
     hashed_password = Column(String(255), nullable=False)
