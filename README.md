@@ -24,8 +24,8 @@ The **NU ITCS Volunteering Hub** connects students who need help with those who 
 
 | Phase    | Features                                                | Status      |
 |----------|---------------------------------------------------------|-------------|
-| Sprint 1 | Register • Login • Profile (CGPA + Strengths + Skills)  | In Progress |
-| Sprint 2 | Create Posts • Tags (#DSA, #EventVolunteer) • Home Feed | Planned     |
+| Sprint 1 | Register • Login • Profile (CGPA + Skills)              | In Progress |
+| Sprint 2 | Strengths • Create Posts • Tags (#DSA, #EventVolunteer) | Planned     |
 | Sprint 3 | Smart Recommendations • Notifications • Endorsements    | Planned     |
 | Sprint 4 | Admin Dashboard • Post Approval • Reports • Full Launch | Planned     |
 
@@ -60,4 +60,4 @@ python -m venv venv
 venv\Scripts\activate    # Windows
 # source venv/bin/activate  # Mac/Linux
 pip install -r requirements.txt
-uvicorn app.main:app --reload
+python -m uvicorn APIs.main:app --reload
