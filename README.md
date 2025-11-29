@@ -4,6 +4,7 @@
 A trusted platform where ITCS students, TAs, faculty, and clubs collaborate academically and in department events — turning volunteering into recognized achievement.
 
 Live Demo (coming soon)
+
 Backend API: Fast APIs
 
 ---
