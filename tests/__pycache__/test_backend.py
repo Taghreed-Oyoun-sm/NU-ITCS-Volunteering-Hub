@@ -1,3 +1,5 @@
+# Testing the backend functionalities alone with made up DB sample
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from backend.student_model import Base, Student

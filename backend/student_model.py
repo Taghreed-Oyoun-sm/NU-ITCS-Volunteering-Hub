@@ -1,3 +1,6 @@
+# This file defines the Student table model for SQLAlchemy.
+# Each student object represents a row in the Student table in the database.
+
 from sqlalchemy import Column, String, Integer, Float, Boolean
 from sqlalchemy.orm import declarative_base
 
@@ -5,7 +8,8 @@ Base = declarative_base()
 
 class Student(Base):
     __tablename__ = "Student"
-
+    
+    # Columns definition
     student_id = Column(Integer, primary_key=True)
     name = Column(String(255), nullable=False)
     email = Column(String(255), unique=True, index= True, nullable=False)
@@ -13,9 +17,12 @@ class Student(Base):
     year = Column(String(50), nullable=False)
     track = Column(String(50), nullable=False)
     cgpa = Column(Float, nullable=False)
-    research_skills = Column(Boolean, default=False)
+    research_skills = Column(Boolean, default=False) 
     jta_skills = Column(Boolean, default=False)
 
+    
+    # Notes: 
+    
     #deafult=False : if user did not enter a value the default value will be false
 
     #nullable : column can be empty or not

@@ -1,4 +1,6 @@
+# Libraries needed to be installed to run the project
 #Endpoints are sign-in and sign-up 
+
 fastapi==0.120.4
 uvicorn==0.22.0
 sqlalchemy==2.0.22
@@ -6,4 +8,4 @@ pydantic[email]==2.5.2
 passlib[bcrypt]==1.7.4
 python-jose==3.3.0
 python-dotenv==1.0.0
-
+pymysql==1.1.1

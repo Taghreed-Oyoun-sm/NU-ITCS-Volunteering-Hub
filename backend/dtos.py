@@ -1,7 +1,13 @@
+# This file contains Pydantic schemas for input validation and output formatting.
+# It also defines Enums for fixed values like Role, Track, and Year.
+
 from pydantic import BaseModel, EmailStr, Field, field_validator
 from enum import Enum
 
-#Fixed values, user can't input any value outside it 
+# ---------------------------
+# Enums for fixed input values
+# ---------------------------
+
 class Role(str, Enum): 
     Student = "Student"
     TA = "TA"
@@ -20,7 +26,10 @@ class Year(str, Enum):
     Junior = "Junior"
     Senior = "Senior"
 
-#schema for signup input
+# ---------------------------
+# Schemas for user input
+# ---------------------------
+
 class UserCreate(BaseModel):
     student_id: int
     name: str = Field(..., min_length=2)
@@ -29,7 +38,7 @@ class UserCreate(BaseModel):
     track: Track
     cgpa: float
     role: Role
-    #For input validation
+    # For input validation
     research_skills: bool = False
     jta_skills: bool = False
     password: str = Field(..., min_length=6, max_length=72)
@@ -42,8 +51,11 @@ class UserCreate(BaseModel):
         if not (0.0 <= v <= 4.0):
             raise ValueError("CGPA must be between 0.0 and 4.0")
         return v
-    
-# Schema for output
+
+# ---------------------------
+# Schemas for output
+# ---------------------------
+
 class UserOut(BaseModel):
     student_id: int
     name: str
@@ -57,11 +69,18 @@ class UserOut(BaseModel):
     class Config:
         orm_mode = True
 
+# ---------------------------
+# Login input
+# ---------------------------
+
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
-# JWT token schema
+# ---------------------------
+# JWT token output
+# ---------------------------
+
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"

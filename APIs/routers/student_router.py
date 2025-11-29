@@ -1,6 +1,10 @@
+# This file contains all API endpoints related to Students:
+# signup, login, profile retrieval, and token-based authentication.
+
 from fastapi import APIRouter, Depends, HTTPException, Header
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 
 from backend.db_operations import get_user_by_email, create_user
 from backend.dtos import UserCreate, UserOut, UserLogin, Token
@@ -13,6 +17,7 @@ router = APIRouter(prefix="/students", tags=["Students"])
 # ---------------------------
 # DB dependency
 # ---------------------------
+
 def get_db():
     db = SessionLocal()
     try:
@@ -23,11 +28,13 @@ def get_db():
 # ---------------------------
 # OAuth2 scheme to get token from headers
 # ---------------------------
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/students/login")
 
 # ---------------------------
 # SIGNUP
 # ---------------------------
+
 @router.post("/signup", response_model=UserOut)
 def signup(user_in: UserCreate, db: Session = Depends(get_db)):
     existing = get_user_by_email(db, user_in.email)
@@ -43,6 +50,7 @@ def signup(user_in: UserCreate, db: Session = Depends(get_db)):
 # ---------------------------
 # LOGIN
 # ---------------------------
+
 @router.post("/login", response_model=Token)
 def login(data: UserLogin, db: Session = Depends(get_db)):
     user = get_user_by_email(db, data.email)
@@ -55,6 +63,7 @@ def login(data: UserLogin, db: Session = Depends(get_db)):
 # ---------------------------
 # AUTH DEPENDENCY
 # ---------------------------
+
 from fastapi import Header
 
 def get_current_student(authorization: str = Header(...), db: Session = Depends(get_db)):
@@ -79,6 +88,25 @@ def get_current_student(authorization: str = Header(...), db: Session = Depends(
 # ---------------------------
 # PROTECTED ROUTE
 # ---------------------------
+
 @router.get("/me", response_model=UserOut)
 def get_my_profile(current_student=Depends(get_current_student)):
     return current_student
+
+# ---------------------------
+# TEMPORARY DB TEST ROUTE
+# ---------------------------
+
+# @router.get("/test_db")
+# def test_db(db: Session = Depends(get_db)):
+
+#     """
+#     Temporary endpoint to verify database is connected
+#     to the backend correctly and working
+
+#     """
+#     try:
+#         db.execute(text("Select 1"))
+#         return {"status": "Database connected successfully!"}
+#     except Exception as e:
+#         return {"error": str(e)}

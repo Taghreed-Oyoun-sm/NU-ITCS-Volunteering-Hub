@@ -1,3 +1,6 @@
+# This is the entry point of the FastAPI backend.
+# It creates tables, includes routers, and runs the API.
+
 from fastapi import FastAPI
 from APIs.routers.student_router import router as student_router
 from backend.student_model import Base
@@ -5,7 +8,7 @@ from backend.db_connection import engine
 
 app = FastAPI(title="NU Volunteering Hub Students API")
 
-# Create tables
+# Create tables in the database
 Base.metadata.create_all(bind=engine)
 
 # Add Routers
