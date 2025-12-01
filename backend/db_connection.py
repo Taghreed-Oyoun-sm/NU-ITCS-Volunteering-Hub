@@ -5,7 +5,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-# Connected locally until we connect it remotely
+# Connected database remotely
 DATABASE_URL = "mysql+pymysql://root:vwaXJwvZmgotPxHQeEOoDvqXuyCuZcyy@shortline.proxy.rlwy.net:18490/railway"
 
 # Create engine with pool_pre_ping to avoid stale connections
