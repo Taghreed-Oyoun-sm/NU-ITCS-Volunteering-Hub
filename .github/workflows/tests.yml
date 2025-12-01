@@ -1,13 +1,11 @@
-name: Python CI
+name: CI - Automated Testing
 
 on:
   push:
-    branches: [main]
   pull_request:
-    branches: [main]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,11 +17,12 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: Upgrade pip
-      run: pip install --upgrade pip
-
     - name: Install dependencies
-      run: pip install -r requirements.txt
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-asyncio httpx
 
     - name: Run tests
-      run: pytest
+      run: |
+        pytest -v
