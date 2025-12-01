@@ -1,0 +1,20 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "MySQL Locall",
+            "database": "nu_volunteering_hub",
+            "username": "root",
+            "password": "Aw2p2df23_dz!io.",
+            "connectionTimeout": 30
+        }
+    ]
+}
