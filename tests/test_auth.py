@@ -1,7 +1,12 @@
 # tests/test_auth.py
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 import pytest
 from app import sign_up, log_in, users_db
 
+# Clear the database before each test
 @pytest.fixture(autouse=True)
 def clear_db():
     users_db.clear()
