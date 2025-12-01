@@ -4,11 +4,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const signUpButton = document.getElementById('signUpButton'); // Button to switch to Sign Up form
     const signInButton = document.getElementById('signInButton'); // Button to switch to Sign In form
     
-    // Get the actual form elements
-    // The Log In form is inside the #signin container
-    const signInForm = signInContainer ? signInContainer.querySelector('form') : null;
-    // The Sign Up form is inside the #signup container
-    const signUpForm = signUpContainer ? signUpContainer.querySelector('form') : null;
+    // Get the actual form elements directly by ID
+    const signInForm = document.getElementById('login-form');   // Login form
+    const signUpForm = document.getElementById('signup-form');   // Signup form
+
 
     // Base URL for the FastAPI backend
     const BASE_URL = 'http://127.0.0.1:8000/students';
@@ -38,51 +37,52 @@ document.addEventListener('DOMContentLoaded', function() {
     // 1. Handle Sign Up Form Submission
     if (signUpForm) {
         signUpForm.addEventListener('submit', async function(event) {
-            event.preventDefault(); // Stop default form submission
+            event.preventDefault();
 
-            // Get form data and map it to the UserCreate DTO structure
             const signUpData = {
-                // student_id is the 'ID' input
-                student_id: parseInt(this.ID.value), 
+                student_id: parseInt(this.ID.value),
                 name: this.uName.value,
-                email: this.email.value,
-                
-                // Get value from select menus
+                email: this['signup-email'].value,
                 year: this.year.value,
                 track: this.track.value,
-                
+                role: this.role.value,
                 cgpa: parseFloat(this.cgpa.value),
-                
-                // Note: The role field is included in the HTML/DTO but not used in the Python create_user function.
-                // Assuming you will add 'role' to the DTO and need it here:
-                // role: this.role.value, 
-                
-                // Convert select values ("true"/"false") to booleans
-                research_skills: this.re.value === 'true', 
-                jta_skills: this.jta.value === 'true',     
-                password: this.password.value
+                research_skills: this.re.value === 'true',
+                jta_skills: this.jta.value === 'true',
+                password: this['signup-password'].value
             };
 
             try {
-                const response = await fetch(`${BASE_URL}/register`, {
+                const response = await fetch(`${BASE_URL}/signup`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(signUpData)
                 });
 
+                const result = await response.json();
+
                 if (response.ok) {
-                    const result = await response.json();
-                    alert('✅ Registration Successful! Student ID: ' + result.student_id);
-                    showSignIn(); // Switch to login form after successful registration
+                    // alert('✅ Registration Successful! Student ID: ' + result.student_id);
+                    // Optionally switch to sign-in form
+                    window.location.href = 'home.html';
                 } else {
-                    const error = await response.json();
-                    alert('❌ Registration Failed: ' + (error.detail || 'Server error. Check backend logs.'));
+                    let errorMsg = '';
+                    if (result.detail) {
+                        if (Array.isArray(result.detail)) {
+                            errorMsg = result.detail.map(d => d.msg || d).join('\n');
+                        } else {
+                            errorMsg = result.detail;
+                        }
+                    } else {
+                        errorMsg = JSON.stringify(result);
+                    }
+                    alert('❌ Registration Failed: ' + errorMsg);
+                    console.error('Signup error:', result);
                 }
+
             } catch (error) {
-                console.error('Network Error:', error);
-                alert('⚠️ Connection Error. Make sure the backend server is running on http://127.0.0.1:8000.');
+                console.error('Network error:', error);
+                alert('⚠️ Connection Error. Make sure the backend server is running at http://127.0.0.1:8000.');
             }
         });
     }
@@ -90,39 +90,46 @@ document.addEventListener('DOMContentLoaded', function() {
     // 2. Handle Log In Form Submission
     if (signInForm) {
         signInForm.addEventListener('submit', async function(event) {
-            event.preventDefault(); // Stop default form submission
-            
-            // FastAPI's OAuth2PasswordRequestForm expects data as application/x-www-form-urlencoded
-            // with keys 'username' (for email) and 'password'.
-            const loginData = new URLSearchParams();
-            loginData.append('username', this.email.value); 
-            loginData.append('password', this.password.value);
+            event.preventDefault(); // prevent default form submission
+
+            // Read values from input fields
+            const email = document.getElementById('signin-email').value.trim();
+            const password = document.getElementById('signin-password').value.trim();
+
+            // Simple frontend validation
+            if (!email || !password) {
+                alert('⚠️ Please enter both email and password.');
+                return;
+            }
+
+            const loginData = { email, password };
 
             try {
-                // The backend /login endpoint returns a JWT token
                 const response = await fetch(`${BASE_URL}/login`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded' 
-                    },
-                    body: loginData.toString()
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(loginData)
                 });
 
+                // Debug logs
+                console.log('Login response status:', response.status);
+                
+                const result = await response.json();
+                console.log('Login response JSON:', result);
+
                 if (response.ok) {
-                    const token = await response.json();
-                    // Store the JWT token (critical for accessing protected pages)
-                    localStorage.setItem('access_token', token.access_token);
-                    alert('🎉 Login Successful! Welcome.');
-                    
-                    // Redirect to the home page (home.html)
-                    window.location.href = 'home.html'; 
+                    // Save JWT to localStorage
+                    localStorage.setItem('access_token', result.access_token);
+
+                    // alert('🎉 Login Successful!');
+                    // Redirect to homepage
+                    window.location.href = 'home.html';
                 } else {
-                    const error = await response.json();
-                    alert('❌ Login Failed: ' + (error.detail || 'Invalid Credentials'));
+                    alert('❌ Login Failed: ' + (result.detail || JSON.stringify(result)));
                 }
             } catch (error) {
-                console.error('Network Error:', error);
-                alert('⚠️ Connection Error. Make sure the backend server is running on http://127.0.0.1:8000.');
+                console.error('Network error:', error);
+                alert('⚠️ Connection Error. Make sure the backend is running at http://127.0.0.1:8000.');
             }
         });
     }
