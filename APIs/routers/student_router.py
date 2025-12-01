@@ -1,7 +1,7 @@
 # This file contains all API endpoints related to Students:
 # signup, login, profile retrieval, and token-based authentication.
 
-from fastapi import APIRouter, Depends, HTTPException, Header
+from fastapi import APIRouter, Depends, HTTPException, Header, Body
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from sqlalchemy import text
@@ -52,13 +52,12 @@ def signup(user_in: UserCreate, db: Session = Depends(get_db)):
 # ---------------------------
 
 @router.post("/login", response_model=Token)
-def login(data: UserLogin, db: Session = Depends(get_db)):
+def login(data: UserLogin = Body(...), db: Session = Depends(get_db)):
     user = get_user_by_email(db, data.email)
     if not user or not verify_password(data.password, user.hashed_password):
         raise HTTPException(status_code=400, detail="Invalid email or password")
     access_token = create_access_token(subject=user.email)
     return {"access_token": access_token, "token_type": "bearer"}
-
 
 # ---------------------------
 # AUTH DEPENDENCY
