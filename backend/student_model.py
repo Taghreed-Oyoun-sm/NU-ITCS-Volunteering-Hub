@@ -1,7 +1,7 @@
 # This file defines the Student table model for SQLAlchemy.
 # Each student object represents a row in the Student table in the database.
 
-from sqlalchemy import Column, String, Integer, Float, Boolean
+from sqlalchemy import Column, String, Integer, Float, Boolean, BIGINT
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
@@ -10,7 +10,7 @@ class Student(Base):
     __tablename__ = "Student"
     
     # Columns definition
-    student_id = Column(Integer, primary_key=True)
+    student_id = Column(BIGINT, primary_key=True)
     name = Column(String(255), nullable=False)
     email = Column(String(255), unique=True, index= True, nullable=False)
     hashed_password = Column(String(255), nullable=False)

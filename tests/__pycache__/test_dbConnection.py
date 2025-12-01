@@ -1,5 +1,4 @@
 # test file to figure out if the databse is successfully connected or not
-
 import pymysql
 
 try:
