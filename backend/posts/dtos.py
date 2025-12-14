@@ -3,6 +3,7 @@ from typing import Optional
 
 class PostCreate(BaseModel):
     student_id: int
+    title: str
     content: str
 
 class CommentCreate(BaseModel):

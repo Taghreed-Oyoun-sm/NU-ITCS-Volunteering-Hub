@@ -1,5 +1,6 @@
-from sqlalchemy import Column, BIGINT, Enum, DateTime, UniqueConstraint
-from sqlalchemy.orm import relationship
+from enum import Enum
+from sqlalchemy import Column, BIGINT, DateTime, UniqueConstraint
+from sqlalchemy import Enum as SQLEnum
 from datetime import datetime, timezone
 from backend.db_connection import Base
 
@@ -8,14 +9,14 @@ class TargetType(str, Enum):
     Response = "Response"
 
 class Report(Base):
-    __tablename__ = "Report"
+    __tablename__ = "reports"
 
-    Report_ID = Column(BIGINT, primary_key=True, autoincrement=True)
-    Reporter_ID = Column(BIGINT, nullable=False)
-    Target_ID = Column(BIGINT, nullable=False)
-    Target_Type = Column(Enum(TargetType), nullable=False)
-    Time = Column(DateTime, default=datetime.now(timezone.utc))
+    id = Column(BIGINT, primary_key=True, autoincrement=True)
+    reporter_id = Column(BIGINT, nullable=False)
+    target_id = Column(BIGINT, nullable=False)
+    target_type = Column(SQLEnum(TargetType), nullable=False)
+    time = Column(DateTime, default=datetime.now(timezone.utc))
 
     __table_args__ = (
-        UniqueConstraint('Reporter_ID', 'Target_ID', 'Target_Type', name='uq_report'),
+        UniqueConstraint("reporter_id", "target_id", "target_type", name="uq_report"),
     )

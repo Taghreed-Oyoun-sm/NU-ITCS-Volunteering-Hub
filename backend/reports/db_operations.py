@@ -1,11 +1,12 @@
 # backend/reports/db_operations.py
 from sqlalchemy.orm import Session
-from .report_model import Report, TargetType
-from backend.posts.post_model import StudentQuestion, Response
+from .report_model import TargetType, Report
+from backend.posts.post_model import Post, Comment  # Updated to actual models
 
 REPORT_THRESHOLD = 10
 
 def report_target(db: Session, reporter_id: int, target_id: int, target_type: TargetType):
+    # Check if this reporter has already reported this target
     existing = db.query(Report).filter(
         Report.Reporter_ID == reporter_id,
         Report.Target_ID == target_id,
@@ -14,6 +15,7 @@ def report_target(db: Session, reporter_id: int, target_id: int, target_type: Ta
     if existing:
         return {"status": "already_reported"}
 
+    # Add the report
     report = Report(
         Reporter_ID=reporter_id,
         Target_ID=target_id,
@@ -22,16 +24,18 @@ def report_target(db: Session, reporter_id: int, target_id: int, target_type: Ta
     db.add(report)
     db.commit()
 
+    # Count total reports for this target
     count = db.query(Report).filter(
         Report.Target_ID == target_id,
         Report.Target_Type == target_type
     ).count()
 
+    # If threshold reached, soft-delete the object
     if count >= REPORT_THRESHOLD:
         if target_type == TargetType.Student_Question:
-            obj = db.query(StudentQuestion).filter(StudentQuestion.Question_ID == target_id).first()
+            obj = db.query(Post).filter(Post.id == target_id).first()
         elif target_type == TargetType.Response:
-            obj = db.query(Response).filter(Response.Response_ID == target_id).first()
+            obj = db.query(Comment).filter(Comment.id == target_id).first()
         else:
             obj = None
 

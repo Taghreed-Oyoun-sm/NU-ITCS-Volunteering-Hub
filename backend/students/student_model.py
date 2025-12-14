@@ -2,9 +2,9 @@
 # Each student object represents a row in the Student table in the database.
 
 from sqlalchemy import Column, String, Integer, Float, Boolean, BIGINT
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.orm import relationship
+from backend.db_connection import Base
 
-Base = declarative_base()
 
 class Student(Base):
     __tablename__ = "Student"

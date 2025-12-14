@@ -1,63 +1,138 @@
-# Testing the backend functionalities alone with made up DB sample
+# tests/test_backend.py
 
+import pytest
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from backend.students.student_model import Base, Student
+from sqlalchemy.orm import sessionmaker, Session
+
+from backend.students.db_operations import create_user
+from backend.students.student_model import Base as StudentBase
+from backend.posts.db_operations import create_post, create_comment
+from backend.posts.post_model import Base as PostBase
 from backend.students.dtos import UserCreate
-from backend.students.db_operations import create_user, get_user_by_email
-from backend.students.password_handling import verify_password
-from backend.students.JWT_auth import create_access_token, decode_token
+from backend.posts.dtos import PostCreate, CommentCreate
+from backend.reports.db_operations import report_target
+from backend.reports.report_model import TargetType
 
-# -----------------------------
-# 1️⃣ Setup in-memory SQLite DB
-# -----------------------------
-DATABASE_URL = "sqlite+pysqlite:///:memory:"  # in-memory DB
-engine = create_engine(DATABASE_URL, echo=True, future=True)
-SessionLocal = sessionmaker(bind=engine)
+# -------------------- FIXTURE -------------------- #
+@pytest.fixture(scope="function")
+def db_session():
+    # Create an SQLite DB for testing
+    engine = create_engine("sqlite:///:memory:", echo=False, future=True)
+    TestingSessionLocal = sessionmaker(bind=engine)
+    
+    # Create all tables
+    StudentBase.metadata.create_all(bind=engine)
+    PostBase.metadata.create_all(bind=engine)
+    
+    session = TestingSessionLocal()
+    try:
+        yield session
+    finally:
+        session.close()
 
-# Create tables
-Base.metadata.create_all(engine)
+# -------------------- STUDENT TESTS -------------------- #
+def test_create_and_get_student(db_session: Session):
+    user_input = UserCreate(
+        student_id=1,
+        name="Alice",
+        email="alice@example.com",
+        password="password123",
+        year="First",
+        track="CS",
+        role="student",
+        cgpa=3.8,
+        research_skills=True,
+        jta_skills=False
+    )
+    student = create_user(db_session, user_input)
+    assert student.name == "Alice"
+    assert student.email == "alice@example.com"
 
-# -----------------------------
-# 2️⃣ Create a test student
-# -----------------------------
-user_input = UserCreate(
-    student_id="S12345",
-    name="Alice Smith",
-    email="alice@example.com",
-    year="Freshman",
-    track="CS",
-    cgpa=3.8,
-    role="Student",  # required by DTO but not stored in DB
-    research_skills=True,
-    JTA_skills=False,
-    password="secret123"
-)
+# -------------------- POST TESTS -------------------- #
+def test_create_post(db_session: Session):
+    # First create a student
+    user_input = UserCreate(
+        student_id=2,
+        name="Bob",
+        email="bob@example.com",
+        password="password123",
+        year="Second",
+        track="IT",
+        role="student",
+        cgpa=3.5,
+        research_skills=False,
+        jta_skills=True
+    )
+    student = create_user(db_session, user_input)
 
-# Start DB session
-db = SessionLocal()
+    post_input = PostCreate(student_id=student.student_id, title="Hello World", content="This is my first post")
+    post = create_post(db_session, post_input)
+    assert post.content == "This is my first post"
+    assert post.student_id == student.student_id
 
-# Create student
-student = create_user(db, user_input)
-print("✅ Created student:", student.student_id, student.name)
+# -------------------- COMMENT TESTS -------------------- #
+def test_create_comment(db_session: Session):
+    # Create a student and post first
+    user_input = UserCreate(
+        student_id=3,
+        name="Charlie",
+        email="charlie@example.com",
+        password="password123",
+        year="Third",
+        track="IS",
+        role="student",
+        cgpa=3.6,
+        research_skills=True,
+        jta_skills=True
+    )
+    student = create_user(db_session, user_input)
+    post_input = PostCreate(student_id=student.student_id, title="Post for comment", content="Content here")
+    post = create_post(db_session, post_input)
 
-# -----------------------------
-# 3️⃣ Fetch student by email
-# -----------------------------
-fetched_student = get_user_by_email(db, "alice@example.com")
-print("✅ Fetched student:", fetched_student.student_id, fetched_student.name)
+    comment_input = CommentCreate(
+        student_id=student.student_id,
+        post_id=post.id,
+        parent_id=None,
+        content="This is a comment"
+    )
+    comment = create_comment(db_session, comment_input)
+    assert comment.content == "This is a comment"
+    assert comment.post_id == post.id
 
-# -----------------------------
-# 4️⃣ Verify password
-# -----------------------------
-is_valid = verify_password("secret123", fetched_student.hashed_password)
-print("✅ Password valid:", is_valid)
+# -------------------- REPORT TESTS -------------------- #
+def test_report_post_and_comment(db_session: Session):
+    # Create student, post, and comment
+    user_input = UserCreate(
+        student_id=4,
+        name="David",
+        email="david@example.com",
+        password="password123",
+        year="Fourth",
+        track="IT",
+        role="student",
+        cgpa=3.7,
+        research_skills=False,
+        jta_skills=True
+    )
+    student = create_user(db_session, user_input)
 
-# -----------------------------
-# 5️⃣ Test JWT token
-# -----------------------------
-token = create_access_token(subject=fetched_student.student_id)
-print("✅ JWT token:", token)
+    post_input = PostCreate(student_id=student.student_id, title="Reportable post", content="Some content")
+    post = create_post(db_session, post_input)
 
-payload = decode_token(token)
-print("✅ Decoded payload:", payload)
+    comment_input = CommentCreate(
+        student_id=student.student_id,
+        post_id=post.id,
+        parent_id=None,
+        content="Reportable comment"
+    )
+    comment = create_comment(db_session, comment_input)
+
+    # Report post
+    result_post = report_target(db_session, reporter_id=student.student_id,
+                                target_id=post.id, target_type=TargetType.Post)
+    assert result_post["status"] in ["reported", "deleted", "already_reported"]
+
+    # Report comment
+    result_comment = report_target(db_session, reporter_id=student.student_id,
+                                   target_id=comment.id, target_type=TargetType.Comment)
+    assert result_comment["status"] in ["reported", "deleted", "already_reported"]
