@@ -2,7 +2,7 @@
 # Each student object represents a row in the Student table in the database.
 
 from sqlalchemy import Column, String, Integer, Float, Boolean, BIGINT
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
 
@@ -20,7 +20,11 @@ class Student(Base):
     research_skills = Column(Boolean, default=False) 
     jta_skills = Column(Boolean, default=False)
 
-    
+    # Relationships
+    posts = relationship("Post", back_populates="author", cascade="all, delete")
+    comments = relationship("Comment", back_populates="author", cascade="all, delete")
+
+
     # Notes: 
     
     #deafult=False : if user did not enter a value the default value will be false

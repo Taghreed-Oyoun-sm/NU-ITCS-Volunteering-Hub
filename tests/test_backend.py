@@ -2,11 +2,11 @@
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from backend.student_model import Base, Student
-from backend.dtos import UserCreate
-from backend.db_operations import create_user, get_user_by_email
-from backend.password_handling import verify_password
-from backend.JWT_auth import create_access_token, decode_token
+from backend.students.student_model import Base, Student
+from backend.students.dtos import UserCreate
+from backend.students.db_operations import create_user, get_user_by_email
+from backend.students.password_handling import verify_password
+from backend.students.JWT_auth import create_access_token, decode_token
 
 # -----------------------------
 # 1️⃣ Setup in-memory SQLite DB
