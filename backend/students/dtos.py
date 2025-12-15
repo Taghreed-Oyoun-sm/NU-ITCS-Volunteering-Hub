@@ -2,6 +2,7 @@
 # It also defines Enums for fixed values like Role, Track, and Year.
 
 from pydantic import BaseModel, EmailStr, Field, field_validator
+from typing import List
 from enum import Enum
 
 # ---------------------------
@@ -37,11 +38,12 @@ class UserCreate(BaseModel):
     year: Year
     track: Track
     cgpa: float
-    role: Role
+    # role: Role
     # For input validation
     research_skills: bool = False
     jta_skills: bool = False
     password: str = Field(..., min_length=6, max_length=72)
+    strength_areas: List[str] = [] # Tags selected by student
 
     class Config:
         orm_mode = True

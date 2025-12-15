@@ -19,10 +19,11 @@ class Student(Base):
     cgpa = Column(Float, nullable=False)
     research_skills = Column(Boolean, default=False) 
     jta_skills = Column(Boolean, default=False)
+    strength_areas = Column(String, default="")
 
     # Relationships
-    posts = relationship("Post", back_populates="author", cascade="all, delete")
-    comments = relationship("Comment", back_populates="author", cascade="all, delete")
+    posts = relationship("Post", back_populates="student",cascade="all, delete")
+    comments = relationship("Comment", back_populates="student", cascade="all, delete")
 
 
     # Notes: 
