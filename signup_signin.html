@@ -34,6 +34,8 @@
         <div class="links">
             <p>Don't Have An Account?</p>
             <button id="signUpButton">Sign Up</button>
+            <p>Want to Register as Instructor?</p>
+            <button id="signUPIbutton">Instructor</button>
         </div>   
     </div>
 
@@ -46,7 +48,7 @@
         <div class="input-group">
             <i class="fas fa-address-card"></i>
             <input type="text" name="ID" id="ID" placeholder="ID" required>
-            <label for="ID">Student/Dr/TA/Club ID</label>
+            <label for="ID">Student ID</label>
         </div>
         <div class="input-group">
             <i class="fas fa-user"></i>
@@ -86,17 +88,6 @@
             <label for="track">Track</label>
         </div>
         <div class="input-group">
-            <i class="fas fa-user"></i>
-            <select name="role" id="role" required>
-                <option value="" disabled selected>Select Role</option>
-                <option value="Student">Student</option>
-                <option value="TA">TA</option>
-                <option value="Dr">Dr</option>
-                <option value="Club">Club</option>
-            </select>
-            <label for="role">Role</label>
-        </div>
-        <div class="input-group">
             <i class="fas fa-graduation-cap"></i>
             <input type="number" name="cgpa" id="cgpa" placeholder="CGPA" min="0.0" max="4.0" step="0.1" required>
             <label for="cgpa">CGPA</label>
@@ -124,6 +115,47 @@
     <div class="links">
         <p>Already Have Account?</p>
         <button id="signInButton">Log In</button>
+        <p>Want to Register as Instructor?</p>
+        <button id="signUPIbuttonStudent">Instructor</button>
+    </div>
+</div>
+
+<div class="Container" id="signUPI" style="display: none;">
+    <h1 class="form-title">Register</h1>
+    <form id="signUPI-form" method="post">
+        <div class="input-group">
+            <i class="fas fa-address-card"></i>
+            <input type="text" name="ID" id="ID" placeholder="ID" required>
+            <label for="ID">Instructor ID</label>
+        </div>
+        <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input type="text" name="uName" id="uName" placeholder="User Name" required>
+            <label for="uName">User Name</label>
+        </div>
+        <div class="input-group">
+            <i class="fas fa-envelope"></i>
+            <input type="email" name="email" id="signup-email" placeholder="Email" required>
+            <label for="signup-email">Email</label>
+        </div>
+        <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" name="password" id="signup-password" placeholder="Password" required>
+            <label for="signup-password">Password</label>
+        </div>
+        <div class="input-group">
+            <i class="fas fa-building-user"></i>
+            <input type="text" name="DepartmentID" id="DID" placeholder="DID" required>
+            <label for="DID">Department ID</label>
+        </div>
+        <input type="submit" class="btn" value="Sign Up">
+    </form>
+    <div class="links">
+        <p>Already Have Account?</p>
+        <button id="signInButtonInstructor">Log In</button> 
+    
+        <p>Want to Register as Student?</p>
+        <button id="signUpButtonInstructor">Student</button>
     </div>
 </div>
 

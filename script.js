@@ -3,11 +3,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const signUpContainer = document.getElementById('signup');
     const signUpButton = document.getElementById('signUpButton'); // Button to switch to Sign Up form
     const signInButton = document.getElementById('signInButton'); // Button to switch to Sign In form
-    
+    const signUPIContainer = document.getElementById('signUPI');
+    const signUPIButton = document.getElementById('signUPIbutton');
+    const signInButtonInstructor = document.getElementById('signInButtonInstructor');
+    const signUpButtonInstructor = document.getElementById('signUpButtonInstructor');
+    const signUPIbuttonStudent = document.getElementById('signUPIbuttonStudent');
     // Get the actual form elements directly by ID
     const signInForm = document.getElementById('login-form');   // Login form
     const signUpForm = document.getElementById('signup-form');   // Signup form
-
+    const signUPIForm = document.getElementById('signUPI-form');
 
     // Base URL for the FastAPI backend
     const BASE_URL = 'http://127.0.0.1:8000/students';
@@ -16,12 +20,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function showSignUp() {
         if (signInContainer) signInContainer.style.display = 'none';
+        if (signUPIContainer) signUPIContainer.style.display = 'none';
         if (signUpContainer) signUpContainer.style.display = 'block';
     }
 
     function showSignIn() {
         if (signUpContainer) signUpContainer.style.display = 'none';
+        if (signUPIContainer) signUPIContainer.style.display = 'none';
         if (signInContainer) signInContainer.style.display = 'block';
+    }
+
+    function showSignUPI() {
+        if (signUpContainer) signUpContainer.style.display = 'none';
+        if (signInContainer) signInContainer.style.display = 'none';
+        if (signUPIContainer) signUPIContainer.style.display = 'block';
     }
 
     if (signUpButton) {
@@ -30,6 +42,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (signInButton) {
         signInButton.addEventListener('click', showSignIn);
+    }
+
+    if (signUPIButton) {
+        signUPIButton.addEventListener('click', showSignUPI);
+    }
+    if (signInButtonInstructor) {
+    signInButtonInstructor.addEventListener('click', showSignIn);
+    }
+
+    if (signUpButtonInstructor) {
+        signUpButtonInstructor.addEventListener('click', showSignUp);
+    }
+
+    if (signUPIbuttonStudent) {
+        signUPIbuttonStudent.addEventListener('click', showSignUPI);
     }
     
     // --- API Communication Functions ---
