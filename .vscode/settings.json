@@ -7,13 +7,13 @@
             },
             "ssh": "Disabled",
             "previewLimit": 50,
-            "server": "localhost",
-            "port": 3306,
+            "server": "shortline.proxy.rlwy.net",
+            "port": 18490,
             "driver": "MySQL",
             "name": "MySQL Locall",
-            "database": "nu_volunteering_hub",
+            "database": "railway",
             "username": "root",
-            "password": "Aw2p2df23_dz!io.",
+            "password": "vwaXJwvZmgotPxHQeEOoDvqXuyCuZcyy",
             "connectionTimeout": 30
         }
     ]
