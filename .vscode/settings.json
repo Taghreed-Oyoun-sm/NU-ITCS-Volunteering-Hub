@@ -1,0 +1,20 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "shortline.proxy.rlwy.net",
+            "port": 18490,
+            "driver": "MySQL",
+            "name": "MySQL Locall",
+            "database": "railway",
+            "username": "root",
+            "password": "vwaXJwvZmgotPxHQeEOoDvqXuyCuZcyy",
+            "connectionTimeout": 30
+        }
+    ]
+}
