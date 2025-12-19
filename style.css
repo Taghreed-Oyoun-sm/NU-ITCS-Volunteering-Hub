@@ -15,7 +15,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 300vh;
-    background: linear-gradient(to bottom, #8cc2e6, #def1ff, #8cc2e6);    
+    background: linear-gradient(to bottom, #B0C4DE, #B0C4DE, #B0C4DE);    
     z-index: -1;
 }
 .Container{
@@ -105,13 +105,40 @@ input:focus~label,input:not(:placeholder-shown)~label{
     margin-top: 0.5rem;
     text-align: center;
 }
-.links{
+
+.links {
     display: flex;
-    justify-content: space-around;
-    padding: 0 4rem;
-    margin-top: 0.9rem;
+    flex-direction: column;      /* stack multiple link-item vertically */
+    gap: 15px;
+    width: 100%;
+    align-items: center;         /* center all link-item horizontally */
+}
+
+.link-item {
+    display: flex;               /* question + button horizontally */
+    align-items: center;
+    gap: 5px;
+}
+
+.link-item p {
+    margin: 0;
     font-weight: bold;
 }
+
+.link-item button {
+    padding: 6px 16px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    color: rgb(244, 181, 62);
+}
+
+.link-item button:hover {
+    text-decoration: underline;
+    color: #8cc2e6;
+}
+
 button{
     color:rgb(244, 181, 62);
     border: none;
@@ -124,13 +151,17 @@ button:hover{
     color: #8cc2e6;
     cursor: pointer;
 }
-.navbar{
-    text-decoration: none;
-    background: rgba(255, 255,255, 0.7);
-    padding-right: 15px;
-    padding-left: 15px;
-    border-bottom: 5px solid #f3b94d;
+
+.navbar {
+    background: rgba(255, 255, 255, 0.95); /* solid but soft */
+    padding: 15px;
+    border-bottom: 3px solid #f3b94d;     /* your yellow accent */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
+
 .navdiv{
     display:flex;
     align-items: center;

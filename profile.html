@@ -31,14 +31,17 @@
                 <div class="profile-header">
                     <div class="profile-avatar">👤</div>
                     <h2 id="displayUserName">User Name</h2>
-                    <p id="displayUserEmail">user@example.com</p>
+                    <p id="displayUserEmail">user@nu.edu.eg</p>
                 </div>
 
                 <div class="profile-section">
-                    <h3>Personal Information</h3>
+                    <h3>Personal & Academic Information</h3>
                     <input type="text" id="updateName" placeholder="Full Name" class="profile-input">
                     <input type="email" id="updateEmail" placeholder="Email Address" class="profile-input">
-                    <button onclick="updatePersonalData()" class="save-btn">Save Personal Info</button>
+                    <input type="number" id="cgpa" placeholder="CGPA" min="0.0" max="4.0" step="0.1" class="profile-input">
+                    <small>Enter subjects or skills you are strong at, separated by commas.</small>
+                    <input type="text" id="strengths" placeholder="E.g., MATH203, CSCI221, Research, JTA" class="profile-input">
+                    <button onclick="updateUserInfo()" class="save-btn">Save Info</button>
                 </div>
 
                 <div class="profile-section">

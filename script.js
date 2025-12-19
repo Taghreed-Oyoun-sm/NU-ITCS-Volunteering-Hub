@@ -73,9 +73,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 year: this.year.value,
                 track: this.track.value,
                 role: this.role.value,
-                cgpa: parseFloat(this.cgpa.value),
-                research_skills: this.re.value === 'true',
-                jta_skills: this.jta.value === 'true',
                 password: this['signup-password'].value
             };
 
@@ -91,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (response.ok) {
                     // alert('✅ Registration Successful! Student ID: ' + result.student_id);
                     // Optionally switch to sign-in form
-                    window.location.href = 'home.html';
+                    window.location.href = 'profile.html';
                 } else {
                     let errorMsg = '';
                     if (result.detail) {
@@ -150,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     // alert('🎉 Login Successful!');
                     // Redirect to homepage
-                    window.location.href = 'home.html';
+                    window.location.href = 'profile.html';
                 } else {
                     alert('❌ Login Failed: ' + (result.detail || JSON.stringify(result)));
                 }

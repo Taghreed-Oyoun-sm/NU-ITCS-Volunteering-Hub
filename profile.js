@@ -1,5 +1,5 @@
 // --- Profile Data Management ---
-function updatePersonalData() {
+function updateUserInfo() {
     const name = document.getElementById('updateName').value.trim();
     const email = document.getElementById('updateEmail').value.trim();
 

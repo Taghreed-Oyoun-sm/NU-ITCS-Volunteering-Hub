@@ -15,7 +15,7 @@
             <ul>
                 <li><a href="home.html">Home</a></li>
                 <li><a href="ask.html">Ask</a></li>
-                <li><a href="#">Profile</a></li>
+                <li><a href="profile.html">Profile</a></li>
             </ul>
         </div>
     </nav>
@@ -25,7 +25,6 @@
             <div class="container">
                 <div class="explore-header" style="display:flex; justify-content: space-between; align-items:center; margin-bottom:30px;">
                     <h2 class="section-title">Explore Questions</h2>
-                    <button id="askQuestionBtn" class="primary-btn">+ Ask Question</button>
                 </div>
 
                 <div id="askQuestionPage" style="display:none; background: rgba(255,255,255,0.8); padding: 25px; border-radius: 12px; margin-bottom: 30px; border: 2px solid #fba203;">
@@ -42,10 +41,17 @@
                     </div>
                 </div>
 
-                <div class="search-bar-container">
-                    <input type="text" id="tagSearchInput" placeholder="Filter by tag..." class="search-input">
-                    <button class="search-button" id="searchBtn">Search</button>
+                <div class="search-area">
+
+                    <div class="search-bar-container">
+                        <input type="text" id="tagSearchInput" placeholder="Filter by tag..." class="search-input">
+                        <button class="search-button" id="searchBtn">Search</button>
+                    </div>
+
+                    <button id="askQuestionBtn" class="primary-btn ask-btn">+ Ask Question</button>
+
                 </div>
+
 
                 <div class="questions-grid" id="questionsContainer"></div>
             </div>

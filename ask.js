@@ -20,6 +20,30 @@ const questions = [
         userVoted: false,
         content: "Is it better to use flex-basis or just set the width?",
         replies: ["Flex-basis is preferred as it respects the flex-direction.", "Always use 'gap' instead of margins for spacing between items!"]
+    },
+
+    {
+        id: 3,
+        title: "How to solve second-order differential equations?",
+        meta: "Asked in Differential Equations",
+        tag: "MATH203",
+        answers: "1 Answer",
+        votes: 5,
+        userVoted: false,
+        content: "I’m trying to understand the method of solving second-order differential equations with constant coefficients.",
+        replies: ["You can try the characteristic equation method; it helps determine the solution type.", "Don’t forget to check if it’s homogeneous or non-homogeneous."]
+    },
+
+    {
+        id: 4,
+        title: "What are the key concepts in Logic Design?",
+        meta: "Asked in Logic Design",
+        tag: "CSCI221",
+        answers: "2 Answers",
+        votes: 8,
+        userVoted: false,
+        content: "I’m learning about combinational and sequential circuits. What should I focus on first?",
+        replies: ["Start with truth tables and Boolean algebra.", "Then move to combinational circuits before tackling sequential logic."]
     }
 ];
 

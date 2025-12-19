@@ -32,11 +32,15 @@
             <input type="submit" class="btn" value="Log In">
         </form>
         <div class="links">
-            <p>Don't Have An Account?</p>
+        <div class="link-item">
+            <p>Don't have an Account?</p>
             <button id="signUpButton">Sign Up</button>
-            <p>Want to Register as Instructor?</p>
+        </div>
+        <div class="link-item">
+            <p>Want to Register as an Instructor?</p>
             <button id="signUPIbutton">Instructor</button>
-        </div>   
+        </div>
+    </div>
     </div>
 
 
@@ -87,38 +91,22 @@
             </select>
             <label for="track">Track</label>
         </div>
-        <div class="input-group">
-            <i class="fas fa-graduation-cap"></i>
-            <input type="number" name="cgpa" id="cgpa" placeholder="CGPA" min="0.0" max="4.0" step="0.1" required>
-            <label for="cgpa">CGPA</label>
-        </div>
-        <div class="input-group">
-            <i class="fas fa-clipboard-check"></i>
-            <select name="re" id="re" required>
-                <option value="" disabled selected>Research Skills?</option>
-                <option value="true">True</option>
-                <option value="false">False</option>
-            </select>
-            <label for="re">Research Skills</label>
-        </div>
-        <div class="input-group">
-            <i class="fas fa-clipboard-check"></i>
-            <select name="jta" id="jta" required>
-                <option value="" disabled selected>JTA Skills?</option>
-                <option value="true">True</option>
-                <option value="false">False</option>
-            </select>
-            <label for="jta">JTA Skills</label>
-        </div>
         <input type="submit" class="btn" value="Sign Up">
     </form>
     <div class="links">
-        <p>Already Have Account?</p>
+    <div class="link-item">
+        <p>Already have an Account?</p>
         <button id="signInButton">Log In</button>
-        <p>Want to Register as Instructor?</p>
+    </div>
+
+    <div class="link-item">
+        <p>Want to Register as an Instructor?</p>
         <button id="signUPIbuttonStudent">Instructor</button>
     </div>
 </div>
+</div>
+
+<!-- Instructor -->
 
 <div class="Container" id="signUPI" style="display: none;">
     <h1 class="form-title">Register</h1>
@@ -151,11 +139,14 @@
         <input type="submit" class="btn" value="Sign Up">
     </form>
     <div class="links">
-        <p>Already Have Account?</p>
-        <button id="signInButtonInstructor">Log In</button> 
-    
-        <p>Want to Register as Student?</p>
-        <button id="signUpButtonInstructor">Student</button>
+        <div class="link-item">
+            <p>Already have an Account?</p>
+            <button id="signInButtonInstructor">Log In</button>
+        </div>
+        <div class="link-item">
+            <p>Want to Register as a Student?</p>
+            <button id="signUpButtonInstructor">Student</button>
+        </div>
     </div>
 </div>
 
