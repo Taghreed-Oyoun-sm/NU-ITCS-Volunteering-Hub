@@ -1,22 +1,20 @@
-from enum import Enum
-from sqlalchemy import Column, BIGINT, DateTime, UniqueConstraint
-from sqlalchemy import Enum as SQLEnum
-from datetime import datetime, timezone
+import enum
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Enum, BIGINT, Text, TIMESTAMP
+from sqlalchemy.sql import func
 from backend.db_connection import Base
 
-class TargetType(str, Enum):
-    Student_Question = "Student_Question"
-    Response = "Response"
+
+class TargetType(enum.Enum):
+    Student_Question = "post"
+    Response = "comment"
 
 class Report(Base):
-    __tablename__ = "reports"
+    __tablename__ = "Report"
 
-    id = Column(BIGINT, primary_key=True, autoincrement=True)
-    reporter_id = Column(BIGINT, nullable=False)
-    target_id = Column(BIGINT, nullable=False)
-    target_type = Column(SQLEnum(TargetType), nullable=False)
-    time = Column(DateTime, default=datetime.now(timezone.utc))
-
-    __table_args__ = (
-        UniqueConstraint("reporter_id", "target_id", "target_type", name="uq_report"),
-    )
+    Report_ID = Column(BIGINT, primary_key=True, autoincrement=True)
+    Post_ID = Column(BIGINT, ForeignKey("Post.post_id"), nullable=False)
+    Reporter_Type = Column(Enum("Student", "Doctor", "TA", name="reporter_type_enum"), nullable=False)
+    Reporter_ID = Column(BIGINT, nullable=False)
+    Reason = Column(Text, nullable=False)
+    Report_Time = Column(TIMESTAMP, server_default=func.current_timestamp())
+    Status = Column(Enum("Pending", "Reviewed", "Resolved", name="report_status_enum"), server_default="Pending")

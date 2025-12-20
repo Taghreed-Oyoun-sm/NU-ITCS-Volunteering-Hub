@@ -1,30 +1,37 @@
-# This is the entry point of the FastAPI backend.
-# It creates tables, includes routers, and runs the API.
-
 from fastapi import FastAPI
-from APIs.routers.student_router import router as student_router
-from backend.student_model import Base
-from backend.db_connection import engine
 from fastapi.middleware.cors import CORSMiddleware
 
+from backend.db_connection import engine, Base
 
-app = FastAPI(title="NU Volunteering Hub Students API")
+# 🔥 IMPORT MODELS (THIS CREATES TABLES)
+from backend.students.student_model import Student
+from backend.posts.post_model import Post
+from backend.comments.comment_model import Comment
+from backend.reports.report_model import Report  # ✅ 1. ADD THIS
+
+from APIs.routers.student_router import router as student_router
+from APIs.routers.post_router import router as post_router
+from APIs.routers.comment_router import router as comment_router
+from APIs.routers.report_router import router as report_router  # ✅ 2. ADD THIS
+
+app = FastAPI(title="NU Volunteering Hub API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # or ["http://localhost:5173"]
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-
-# Create tables in the database
+# 🔥 NOW tables will be created
 Base.metadata.create_all(bind=engine)
 
-# Add Routers
 app.include_router(student_router)
+app.include_router(post_router)
+app.include_router(comment_router)
+app.include_router(report_router)  # ✅ 3. ADD THIS
 
 @app.get("/")
 def root():
-    return {"message": "Students API is running"}
+    return {"message": "NU Volunteering Hub API is running"}

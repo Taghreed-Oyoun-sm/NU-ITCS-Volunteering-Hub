@@ -1,19 +1,6 @@
-# This file contains Pydantic schemas for input validation and output formatting.
-# It also defines Enums for fixed values like Role, Track, and Year.
-
 from pydantic import BaseModel, EmailStr, Field, field_validator
 from typing import List
 from enum import Enum
-
-# ---------------------------
-# Enums for fixed input values
-# ---------------------------
-
-class Role(str, Enum): 
-    Student = "Student"
-    TA = "TA"
-    Dr = "Dr"
-    Club = "Club"
 
 class Track(str, Enum):
     CS = "CS"
@@ -27,10 +14,6 @@ class Year(str, Enum):
     Junior = "Junior"
     Senior = "Senior"
 
-# ---------------------------
-# Schemas for user input
-# ---------------------------
-
 class UserCreate(BaseModel):
     student_id: int
     name: str = Field(..., min_length=2)
@@ -38,25 +21,16 @@ class UserCreate(BaseModel):
     year: Year
     track: Track
     cgpa: float
-    # role: Role
-    # For input validation
-    research_skills: bool = False
-    jta_skills: bool = False
+    # research_skills: bool = False
+    # jta_skills: bool = False
     password: str = Field(..., min_length=6, max_length=72)
-    strength_areas: List[str] = [] # Tags selected by student
-
-    class Config:
-        orm_mode = True
+    strength_areas: List[str] = []
 
     @field_validator("cgpa")
     def validate_cgpa(cls, v):
         if not (0.0 <= v <= 4.0):
             raise ValueError("CGPA must be between 0.0 and 4.0")
         return v
-
-# ---------------------------
-# Schemas for output
-# ---------------------------
 
 class UserOut(BaseModel):
     student_id: int
@@ -65,23 +39,15 @@ class UserOut(BaseModel):
     year: Year
     track: Track
     cgpa: float
-    research_skills: bool
-    jta_skills: bool
+    # research_skills: bool
+    # jta_skills: bool
 
     class Config:
         orm_mode = True
 
-# ---------------------------
-# Login input
-# ---------------------------
-
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
-
-# ---------------------------
-# JWT token output
-# ---------------------------
 
 class Token(BaseModel):
     access_token: str

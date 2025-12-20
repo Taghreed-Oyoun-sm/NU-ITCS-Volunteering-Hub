@@ -2,10 +2,10 @@
 
 from sqlalchemy.orm import Session
 from datetime import datetime, timezone
-
-from backend.students.student_model import Student
-from .post_model import Post, Comment
+from .post_model import Post
 from .dtos import PostCreate, CommentCreate
+from backend.comments.comment_model import Comment
+from backend.students.student_model import Student
 
 
 # -------------------- POSTS -------------------- #
@@ -27,19 +27,21 @@ def create_post(db: Session, post_in: PostCreate):
 
 # -------------------- COMMENTS / REPLIES -------------------- #
 
-def create_comment(db: Session, comment_in: CommentCreate):
+# backend/posts/db_operations.py
+
+def create_comment(db: Session, student_id: int, post_id: int, content: str, parent_id: int = None):
     comment = Comment(
-        student_id=comment_in.student_id,
-        post_id=comment_in.post_id,
-        parent_id=comment_in.parent_id,
-        content=comment_in.content,
-        created_at=datetime.now(timezone.utc),
-        is_deleted=False
+        post_id=post_id,
+        student_id=student_id,
+        content=content,
+        parent_id=parent_id
     )
+
     db.add(comment)
     db.commit()
     db.refresh(comment)
     return comment
+
 
 # -------------------- SEARCH BY TAG -------------------- #
 def search_posts_by_tag(db: Session, tag: str):
