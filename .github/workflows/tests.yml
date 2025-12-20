@@ -6,7 +6,7 @@ on:
     paths:
       - 'backend/**'
       - 'tests/**'
-      - 'requirementss.txt'
+      - 'requirements.txt'
       - '.github/workflows/**'
   pull_request:
     branches: [ "main" ]
@@ -37,6 +37,6 @@ jobs:
 
     - name: Run tests
       run: |
-        # Tells Python to look inside the /backend folder for your logic
-        export PYTHONPATH=$PYTHONPATH:$(pwd)/backend
+        # Use the current working directory as the path
+        export PYTHONPATH=$PYTHONPATH:$(pwd)
         pytest -v tests/
