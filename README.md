@@ -24,8 +24,8 @@ The **NU ITCS Volunteering Hub** connects students who need help with those who 
 
 | Phase    | Features                                                | Status      |
 |----------|---------------------------------------------------------|-------------|
-| Sprint 1 | Register • Login • Profile (CGPA + Skills)              | In Progress |
-| Sprint 2 | Strengths • Create Posts • Tags (#DSA, #EventVolunteer) | Planned     |
+| Sprint 1 | Register • Login • Profile (CGPA + Skills)              | Done        |
+| Sprint 2 | Strengths • Create Posts • Tags (#DSA, #EventVolunteer) | Done        |
 | Sprint 3 | Smart Recommendations • Notifications • Endorsements    | Planned     |
 | Sprint 4 | Admin Dashboard • Post Approval • Reports • Full Launch | Planned     |
 
