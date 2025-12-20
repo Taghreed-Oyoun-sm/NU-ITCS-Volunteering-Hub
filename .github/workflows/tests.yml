@@ -37,11 +37,11 @@ jobs:
 
     - name: Run tests
       run: |
-        # 1. Ensure we are in the root
-        cd $GITHUB_WORKSPACE
+        # 1. Force the current directory into the Python Path manually
+        export PYTHONPATH="${PYTHONPATH}:${GITHUB_WORKSPACE}"
         
-        # 2. Add the current directory AND the backend directory to the path
-        export PYTHONPATH=$PYTHONPATH:.
+        # 2. Debug: List files so you can see if the folder is actually there in the logs
+        ls -R
         
-        # 3. Run pytest while explicitly telling it to look at the current directory
-        python3 -m pytest -v tests/
+        # 3. Run pytest with the explicit path
+        python3 -m pytest tests/
