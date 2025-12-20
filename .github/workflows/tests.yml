@@ -2,7 +2,17 @@ name: CI - Automated Testing
 
 on:
   push:
+    branches: [ "main" ]
+    # Only run if files in these folders change
+    paths:
+      - 'NU-ITCS-Volunteering-Hub-backend-feature/**'
+      - 'tests/**'
+      - '.github/workflows/**'
   pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'NU-ITCS-Volunteering-Hub-backend-feature/**'
+      - 'tests/**'
 
 jobs:
   test:
@@ -20,10 +30,13 @@ jobs:
     - name: Install dependencies
       run: |
         pip install --upgrade pip
-        pip install -r requirements.txt
+        # Install database and security tools required by your backend
+        pip install sqlalchemy passlib[bcrypt] python-jose[cryptography] python-dotenv pydantic[email]
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         pip install pytest pytest-asyncio httpx
 
     - name: Run tests
       run: |
+        # This matches your specific folder name
         export PYTHONPATH=$PYTHONPATH:$(pwd)/NU-ITCS-Volunteering-Hub-backend-feature
         pytest -v tests/
