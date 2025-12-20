@@ -19,12 +19,12 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        # We use 'requirements.txt' because it's in your root
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        # Explicitly install testing requirements
         pip install pytest pytest-asyncio httpx sqlalchemy pydantic
 
-    - name: Run tests
+    - name: Run tests with explicit path
       run: |
-        # Use PWD (Print Working Directory) to get the full absolute path
-        export PYTHONPATH=$PYTHONPATH:$(pwd)
+        # We use python3 -m pytest which automatically adds the current directory to sys.path
+        export PYTHONPATH=${PYTHONPATH}:${GITHUB_WORKSPACE}
         python3 -m pytest -v tests/
