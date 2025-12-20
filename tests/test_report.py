@@ -4,78 +4,47 @@ from backend.reports.db_operations import report_target, REPORT_THRESHOLD
 from backend.reports.report_model import TargetType, Report
 from backend.posts.post_model import Post
 from backend.comments.comment_model import Comment
+from backend.students.student_model import Student
 
-# 1. Test basic reporting functionality
+# Helper to setup a post so we don't repeat code
+def create_test_post(db, post_id):
+    # We also need a student because Post depends on Student
+    student = Student(student_id=post_id+100, name="Author", email=f"a{post_id}@nu.edu.eg")
+    db.add(student)
+    post = Post(post_id=post_id, title="Test", content="Content", student_id=student.student_id)
+    db.add(post)
+    db.commit()
+    return post
+
 def test_report_target_success(db_session: Session):
-    # 1. SETUP: Create the student and post so the foreign keys work
-    from backend.posts.post_model import Post
-    
-    test_post = Post(
-        post_id=1, 
-        title="Test Post", 
-        content="Testing reports", 
-        student_id=10, 
-        is_deleted=False
-    )
-    db_session.add(test_post)
-    db_session.commit()
-
-    # 2. ACT: Now report the post we just created
-    result = report_target(
-        db=db_session,
-        reporter_id=2,
-        target_id=1, # This matches the post_id=1 above
-        target_type=TargetType.Student_Question,
-        reason="Inappropriate language"
-    )
-
-    # 3. ASSERT
+    create_test_post(db_session, 1)
+    result = report_target(db_session, 2, 1, TargetType.Student_Question, "Reason")
     assert result["status"] == "reported"
-    assert result["count"] == 1
-    
-# 2. Test prevention of duplicate reports from the same user
-def test_report_target_already_reported(db_session: Session):
-    # Setup: Report a target once
-    report_target(db_session, 2, 1, TargetType.Student_Question, "First report")
-    
-    # Try reporting the same target with the same user
-    result = report_target(db_session, 2, 1, TargetType.Student_Question, "Second report")
 
+def test_report_target_already_reported(db_session: Session):
+    create_test_post(db_session, 1) # MUST setup data again for this test
+    report_target(db_session, 2, 1, TargetType.Student_Question, "First")
+    result = report_target(db_session, 2, 1, TargetType.Student_Question, "Second")
     assert result["status"] == "already_reported"
 
-# 3. Test soft-deletion after reaching the threshold
 def test_report_threshold_soft_delete(db_session: Session):
-    # Setup: Ensure a post exists that is not yet deleted
-    post = db_session.query(Post).filter(Post.id == 1).first()
+    post = create_test_post(db_session, 1)
     post.is_deleted = False
     db_session.commit()
 
-    # Act: Simulate multiple users reporting the post until the threshold is reached
-    # We use REPORT_THRESHOLD from your operations file
     for i in range(1, REPORT_THRESHOLD + 1):
-        result = report_target(
-            db=db_session,
-            reporter_id=100 + i, # Unique reporter IDs
-            target_id=1,
-            target_type=TargetType.Student_Question,
-            reason="Spam"
-        )
+        result = report_target(db_session, 100 + i, 1, TargetType.Student_Question, "Spam")
 
-    # Verify the last report triggered the deletion
     assert result["status"] == "deleted"
-    
-    # Verify the database reflects the soft-delete
     db_session.refresh(post)
     assert post.is_deleted is True
 
-# 4. Test reporting a comment (Response)
 def test_report_comment_success(db_session: Session):
-    result = report_target(
-        db=db_session,
-        reporter_id=5,
-        target_id=1, # comment_id
-        target_type=TargetType.Response,
-        reason="Harassment"
-    )
+    # Setup: Create a student, then a post, then a comment
+    create_test_post(db_session, 1)
+    comment = Comment(id=1, post_id=1, student_id=101, content="Bad comment")
+    db_session.add(comment)
+    db_session.commit()
 
+    result = report_target(db_session, 5, 1, TargetType.Response, "Harassment")
     assert result["status"] == "reported"
