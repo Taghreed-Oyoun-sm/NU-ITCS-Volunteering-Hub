@@ -31,14 +31,14 @@ def db_session():
 
 # -------------------- STUDENT TESTS -------------------- #
 def test_create_and_get_student(db_session: Session):
-    # Use string values for year and track to match backend expectations
+    # FIX: Use strings directly to avoid the ImportError
     user_input = UserCreate(
         student_id=1,
         name="Alice",
         email="alice@nu.edu.eg",
         password="password123",
-        year="Freshman",
-        track="CS",
+        year="Freshman",  # Standard string value
+        track="CS",        # Standard string value
         role="student",
         cgpa=3.8,
         research_skills=True,
@@ -50,25 +50,17 @@ def test_create_and_get_student(db_session: Session):
 
 # -------------------- POST TESTS -------------------- #
 def test_create_post(db_session: Session):
-    # 1. Setup: Post creation depends on an existing student
+    # 1. Setup: Create the student first
     user_input = UserCreate(
-        student_id=2,
-        name="Bob",
-        email="bob@nu.edu.eg",
-        password="password123",
-        year="Sophomore",
-        track="AI",
-        role="student",
-        cgpa=3.5,
-        research_skills=False,
-        jta_skills=True
+        student_id=2, name="Bob", email="bob@nu.edu.eg", password="password123",
+        year="Sophomore", track="AI", role="student", cgpa=3.5
     )
     student = create_user(db_session, user_input)
 
-    # 2. Act: Create the post using the student_id
+    # 2. Act: Create the post
     post_input = PostCreate(title="Hello World", content="This is my first post", tags=["General"])
     
-    # In your backend, student_id is passed as a separate argument to create_post
+    # FIX: In your backend, student_id is a separate argument
     post = create_post(db_session, post_input, student_id=student.student_id)
     
     assert post.content == "This is my first post"
@@ -76,23 +68,17 @@ def test_create_post(db_session: Session):
 
 # -------------------- COMMENT TESTS -------------------- #
 def test_create_comment(db_session: Session):
-    # 1. Setup: Create student and post first
+    # 1. Setup
     user_input = UserCreate(
-        student_id=3,
-        name="Charlie",
-        email="charlie@example.com",
-        password="password123",
-        year="Sophomore",
-        track="AI",
-        role="student",
-        cgpa=3.6
+        student_id=3, name="Charlie", email="c@example.com", password="p123",
+        year="Sophomore", track="AI", role="student", cgpa=3.6
     )
     student = create_user(db_session, user_input)
-    post_input = PostCreate(title="Post for comment", content="Content here", tags=["Discussion"])
-    post = create_post(db_session, post_input, student_id=student.student_id)
+    post_data = PostCreate(title="Post", content="Content", tags=["Discussion"])
+    post = create_post(db_session, post_data, student_id=student.student_id)
 
     # 2. Act: Create a comment
-    # Use the specific field names expected by your create_comment function
+    # FIX: Matches the exact backend signature
     comment = create_comment(
         db=db_session,
         content="This is a comment",
@@ -105,27 +91,22 @@ def test_create_comment(db_session: Session):
 
 # -------------------- REPORT TESTS -------------------- #
 def test_report_post_and_comment(db_session: Session):
-    # 1. Setup: Create student and post
+    # 1. Setup
     user_input = UserCreate(
-        student_id=4,
-        name="David",
-        email="david@example.com",
-        password="password123",
-        year="Freshman",
-        track="CS",
-        role="student",
-        cgpa=3.7
+        student_id=4, name="David", email="d@example.com", password="p123",
+        year="Freshman", track="CS", role="student", cgpa=3.7
     )
     student = create_user(db_session, user_input)
-    post_input = PostCreate(title="Reportable post", content="Some content", tags=["Alert"])
-    post = create_post(db_session, post_input, student_id=student.student_id)
+    post_data = PostCreate(title="Reportable", content="Content", tags=["Alert"])
+    post = create_post(db_session, post_data, student_id=student.student_id)
 
-    # 2. Act: Report the post
-    result_post = report_target(
+    # 2. Act: Report
+    # FIX: Uses Student_Question to match backend target types
+    result = report_target(
         db=db_session, 
         reporter_id=student.student_id,
         target_id=post.post_id, 
         target_type=TargetType.Student_Question
     )
     
-    assert result_post["status"] in ["reported", "deleted", "already_reported"]
+    assert result["status"] in ["reported", "deleted", "already_reported"]
