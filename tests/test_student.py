@@ -9,7 +9,7 @@ def test_create_user_success(db_session: Session):
     user_data = UserCreate(
         student_id=2021001,
         name="Ahmed Ali",
-        email="ahmed@example.com",
+        email="ahmed@nu.edu.eg",
         year=Year.Junior,
         track=Track.CS,
         cgpa=3.8,
@@ -20,7 +20,7 @@ def test_create_user_success(db_session: Session):
     
     db_user = create_user(db=db_session, user_in=user_data)
 
-    assert db_user.email == "ahmed@example.com"
+    assert db_user.email == "ahmed@nu.edu.eg"
     # Verify strength_areas converted from list to comma-separated string
     assert db_user.strength_areas == "Python,Data Science"
     # Verify password was hashed and is not plain text
@@ -30,7 +30,7 @@ def test_create_user_success(db_session: Session):
 # 2. Test prevention of duplicate emails
 def test_create_user_duplicate_email(db_session: Session):
     user_data = UserCreate(
-        student_id=1, name="User1", email="duplicate@test.com", 
+        student_id=1, name="User1", email="duplicate@nu.edu.eg", 
         year=Year.Freshman, track=Track.AI, cgpa=3.0, password="password"
     )
     # Create the first user
@@ -43,7 +43,7 @@ def test_create_user_duplicate_email(db_session: Session):
 
 # 3. Test retrieving a user by email
 def test_get_user_by_email(db_session: Session):
-    email = "search@test.com"
+    email = "search@nu.edu.eg"
     user_data = UserCreate(
         student_id=2, name="Search Test", email=email, 
         year=Year.Senior, track=Track.BMD, cgpa=3.5, password="password"
