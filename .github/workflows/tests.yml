@@ -25,6 +25,4 @@ jobs:
 
     - name: Run tests with explicit path
       run: |
-        # We use python3 -m pytest which automatically adds the current directory to sys.path
-        export PYTHONPATH=${PYTHONPATH}:${GITHUB_WORKSPACE}
-        python3 -m pytest -v tests/
+        python3 -m pytest tests/
