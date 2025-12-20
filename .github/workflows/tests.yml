@@ -25,6 +25,6 @@ jobs:
 
     - name: Run tests
       run: |
-        # Since 'backend' is in the root, '.' tells Python to look here
-        export PYTHONPATH=$PYTHONPATH:.
+        # Use PWD (Print Working Directory) to get the full absolute path
+        export PYTHONPATH=$PYTHONPATH:$(pwd)
         python3 -m pytest -v tests/
