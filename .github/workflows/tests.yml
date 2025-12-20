@@ -36,11 +36,8 @@ jobs:
 
     - name: Run tests
       run: |
-        # 1. Enter the sub-folder where the code actually lives
-        cd "NU-ITCS-Volunteering-Hub-backend-feature"
-        
-        # 2. Add this folder to the Python Path
+        # 1. Add the current folder to Python Path
         export PYTHONPATH=$PYTHONPATH:.
         
-        # 3. Run the tests
+        # 2. Run the tests
         python3 -m pytest -v tests/
