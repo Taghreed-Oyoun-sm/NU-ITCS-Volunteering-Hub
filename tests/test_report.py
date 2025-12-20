@@ -7,10 +7,24 @@ from backend.comments.comment_model import Comment
 
 # 1. Test basic reporting functionality
 def test_report_target_success(db_session: Session):
-    # Setup: Assume post_id 1 and reporter_id 2 exist
+    # Setup: Create a student and a post first so the IDs exist
+    from backend.posts.post_model import Post
+    
+    # Create the target post
+    test_post = Post(
+        post_id=1, 
+        title="Test Post", 
+        content="This is a test", 
+        student_id=10, 
+        is_deleted=False
+    )
+    db_session.add(test_post)
+    db_session.commit()
+
+    # Now act
     result = report_target(
         db=db_session,
-        reporter_id=2,
+        reporter_id=2, # Ensure this ID exists if there's a FK constraint
         target_id=1,
         target_type=TargetType.Student_Question,
         reason="Inappropriate language"
@@ -18,7 +32,6 @@ def test_report_target_success(db_session: Session):
 
     assert result["status"] == "reported"
     assert result["count"] == 1
-
 # 2. Test prevention of duplicate reports from the same user
 def test_report_target_already_reported(db_session: Session):
     # Setup: Report a target once
