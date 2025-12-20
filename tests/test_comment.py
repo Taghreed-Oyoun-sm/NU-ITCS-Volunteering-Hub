@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from backend.comments.comment_model import Comment
 from backend.comments.comment_dtos import CommentCreate
 # Assuming your create function is in db_operations.py
-from backend.comments.db_operations import create_comment 
+from backend.posts.db_operations import create_comment 
 
 # 1. Test basic comment creation on a post
 def test_create_comment_success(db_session: Session):
