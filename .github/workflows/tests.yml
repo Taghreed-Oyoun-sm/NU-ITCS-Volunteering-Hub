@@ -37,6 +37,11 @@ jobs:
 
     - name: Run tests
       run: |
-        # This command finds every directory in your repo and adds them to the path
-        export PYTHONPATH=$PYTHONPATH:$(find . -type d | tr '\n' ':')
-        pytest -v tests/
+        # 1. Ensure we are in the root
+        cd $GITHUB_WORKSPACE
+        
+        # 2. Add the current directory AND the backend directory to the path
+        export PYTHONPATH=$PYTHONPATH:.
+        
+        # 3. Run pytest while explicitly telling it to look at the current directory
+        python3 -m pytest -v tests/
