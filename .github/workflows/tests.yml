@@ -23,6 +23,6 @@ jobs:
         # Explicitly install testing requirements
         pip install pytest pytest-asyncio httpx sqlalchemy pydantic
 
-    - name: Run tests with explicit path
+    - name: Run tests
       run: |
         python3 -m pytest tests/
