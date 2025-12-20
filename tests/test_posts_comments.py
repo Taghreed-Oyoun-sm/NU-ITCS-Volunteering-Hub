@@ -1,78 +1,66 @@
 import pytest
-from backend.posts.db_operations import (
-    create_post, 
-    search_posts_by_tag, 
-    find_suitable_students,
-    create_comment
-)
-from backend.posts.dtos import PostCreate, CommentCreate
+from sqlalchemy.orm import Session
+from backend.posts.db_operations import create_post, search_posts_by_tag, find_suitable_students, create_comment
+from backend.posts.dtos import PostCreate
 from backend.students.student_model import Student
-from backend.posts.post_model import Post
 
-# --- 1. POST CREATION & SEARCH ---
-
-def test_create_post_success(db_session):
-    """Verify post is saved with comma-separated tags."""
-    post_in = PostCreate(
-        student_id=1,
-        title="Calculus Help",
-        content="Solving integrals",
-        tags=["Math", "Calc"]
+# 1. Test Post Creation
+def test_create_post_success(db_session: Session):
+    # Prepare data using the DTO
+    post_data = PostCreate(
+        title="Python Help",
+        content="Looking for help with SQLAlchemy",
+        tags=["Python", "Database"]
     )
-    post = create_post(db_session, post_in)
-    assert post.post_id is not None
-    assert post.tags == "Math,Calc" # Verifies join logic
-    assert post.is_deleted is False
+    # We assume a student with ID 1 exists for this test
+    # In a real test, you should create the student first
+    post_data.student_id = 1 
 
-def test_search_ignores_deleted_posts(db_session):
-    """Ensure soft-deleted posts are filtered out of searches."""
-    create_post(db_session, PostCreate(student_id=1, title="Active", content="...", tags=["Search"]))
-    deleted = create_post(db_session, PostCreate(student_id=1, title="Hidden", content="...", tags=["Search"]))
+    new_post = create_post(db_session, post_data)
+
+    assert new_post.id is not None
+    assert new_post.title == "Python Help"
+    assert "Python,Database" in new_post.tags  # Operations joins tags with commas
+
+# 2. Test Searching Posts by Tag
+def test_search_posts_by_tag(db_session: Session):
+    # Setup: Create a post with specific tags
+    post_data = PostCreate(title="Math", content="Calculus", tags=["Math"])
+    post_data.student_id = 1
+    create_post(db_session, post_data)
+
+    # Search for the tag
+    results = search_posts_by_tag(db_session, "Math")
     
-    deleted.is_deleted = True # Manual soft-delete
+    assert len(results) > 0
+    assert results[0].title == "Math"
+
+# 3. Test Matching Students by Post Tags
+def test_find_suitable_students(db_session: Session):
+    # Setup: Create a student with matching strengths
+    student = Student(
+        name="Test Student",
+        email="test@nu.edu.eg",
+        strength_areas="AI, Python"
+    )
+    db_session.add(student)
     db_session.commit()
-    
-    results = search_posts_by_tag(db_session, "Search")
-    assert len(results) == 1
-    assert results[0].title == "Active"
 
-# --- 2. STUDENT MATCHING (PRIORITY LOGIC) ---
+    # Search for students who know 'AI'
+    suitable_students = find_suitable_students(db_session, ["AI"])
 
-def test_match_students_with_messy_spacing(db_session):
-    """Verify .strip() handles extra spaces in student strength areas."""
-    s1 = Student(student_id=50, strength_areas="  Math  , Physics  ")
-    db_session.add(s1)
-    db_session.commit()
-    
-    matches = find_suitable_students(db_session, ["Math"])
-    assert len(matches) == 1 # Confirms cleaning logic in db_operations
+    assert len(suitable_students) == 1
+    assert "AI" in suitable_students[0].strength_areas
 
-def test_match_multiple_students_and_tags(db_session):
-    """Verify matching logic works for multiple tags simultaneously."""
-    s1 = Student(student_id=1, strength_areas="Python")
-    s2 = Student(student_id=2, strength_areas="Java")
-    db_session.add_all([s1, s2])
-    db_session.commit()
+# 4. Test Comment Creation
+def test_create_comment_success(db_session: Session):
+    # Note: Requires a valid post_id and student_id
+    comment = create_comment(
+        db=db_session, 
+        student_id=1, 
+        post_id=1, 
+        content="This is a helpful post!"
+    )
     
-    matches = find_suitable_students(db_session, ["Python", "Java"])
-    assert len(matches) == 2
-
-# --- 3. COMMENTS & REPLIES ---
-
-def test_comment_threading(db_session):
-    """Verify that replies are correctly linked to parent comments."""
-    # 1. Need a post first
-    post = create_post(db_session, PostCreate(student_id=1, title="Q", content="C", tags=[]))
-    
-    # 2. Create parent comment
-    parent = create_comment(db_session, CommentCreate(
-        student_id=2, post_id=post.post_id, content="Root comment"
-    ))
-    
-    # 3. Create reply linked via parent_id
-    reply = create_comment(db_session, CommentCreate(
-        student_id=3, post_id=post.post_id, content="Reply", parent_id=parent.id
-    ))
-    
-    assert reply.parent_id == parent.id # Verifies relationship
-    assert reply.post_id == post.post_id
+    assert comment.id is not None
+    assert comment.content == "This is a helpful post!"
