@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Novathink</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navdiv">
+            <div class="logo"><img src="Novathink_OwlNBG.png" alt="Owl" width="40"></div>
+            <div class="logo2"><img src="Novathink-TitleNBG.png" alt="title" width="100"></div>
+        </div>
+    </nav>
+
+    <!-- LOGIN FORM -->
+    <div class="Container" id="signin">
+        <h1 class="form-title">Log In</h1>
+        <form id="login-form">
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="signin-email" placeholder="Email" required>
+                <label for="signin-email">Email</label>
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="signin-password" placeholder="Password" required>
+                <label for="signin-password">Password</label>
+            </div>
+            <input type="submit" class="btn" value="Log In">
+        </form>
+        <div class="links">
+        <div class="link-item">
+            <p>Don't have an Account?</p>
+            <button id="signUpButton">Sign Up</button>
+        </div>
+        <div class="link-item">
+            <p>Want to Register as an Instructor?</p>
+            <button id="signUPIbutton">Instructor</button>
+        </div>
+    </div>
+    </div>
+
+
+
+    <!-- SIGN UP FORM -->
+    <div class="Container" id="signup" style="display: none;">
+    <h1 class="form-title">Register</h1>
+    <form id="signup-form" method="post">
+        <div class="input-group">
+            <i class="fas fa-address-card"></i>
+            <input type="text" name="ID" id="ID" placeholder="ID" required>
+            <label for="ID">Student ID</label>
+        </div>
+        <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input type="text" name="uName" id="uName" placeholder="User Name" required>
+            <label for="uName">User Name</label>
+        </div>
+        <div class="input-group">
+            <i class="fas fa-envelope"></i>
+            <input type="email" name="email" id="signup-email" placeholder="Email" required>
+            <label for="signup-email">Email</label>
+        </div>
+        <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" name="password" id="signup-password" placeholder="Password" required>
+            <label for="signup-password">Password</label>
+        </div>
+        <div class="input-group">
+            <i class="fas fa-calendar"></i>
+            <select name="year" id="year" required>
+                <option value="" disabled selected>Select Year</option>
+                <option value="Freshman">Freshman</option>
+                <option value="Sophomore">Sophomore</option>
+                <option value="Junior">Junior</option>
+                <option value="Senior">Senior</option>
+            </select>
+            <label for="year">Year</label>
+        </div>
+        <div class="input-group">
+            <i class="fas fa-graduation-cap"></i>
+            <select name="track" id="track" required>
+                <option value="" disabled selected>Select Track</option>
+                <option value="CS">CS</option>
+                <option value="AI">AI</option>
+                <option value="BMD">BMD</option>
+                <option value="CyberSecurity">CyberSecurity</option>
+            </select>
+            <label for="track">Track</label>
+        </div>
+        <div class="input-group">
+            <i class="fas fa-graduation-cap"></i>
+            <input type="number" name="cgpa" id="cgpa" placeholder="CGPA" min="0.0" max="4.0" step="0.1" required>
+            <label for="cgpa">CGPA</label>
+            <option value="" disabled selected>Enter subject code or skill</option>
+        </div>
+
+        <div class="input-group">
+            <i class="fas fa-star"></i>
+            <input 
+                type="text" 
+                name="strengths" 
+                id="strengths" 
+                placeholder="E.g., MATH203, CSCI221, Research, JTA" 
+                required
+            >
+            <label for="strengths">Strength Areas</label>
+        </div>
+
+        <input type="submit" class="btn" value="Sign Up">
+    </form>
+    <div class="links">
+    <div class="link-item">
+        <p>Already have an Account?</p>
+        <button id="signInButton">Log In</button>
+    </div>
+
+    <div class="link-item">
+        <p>Want to Register as an Instructor?</p>
+        <button id="signUPIbuttonStudent">Instructor</button>
+    </div>
+</div>
+</div>
+
+<!-- Instructor -->
+
+<div class="Container" id="signUPI" style="display: none;">
+    <h1 class="form-title">Register</h1>
+    <form id="signUPI-form" method="post">
+        <div class="input-group">
+            <i class="fas fa-address-card"></i>
+            <input type="text" name="ID" id="ID" placeholder="ID" required>
+            <label for="ID">Instructor ID</label>
+        </div>
+        <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input type="text" name="uName" id="uName" placeholder="User Name" required>
+            <label for="uName">User Name</label>
+        </div>
+        <div class="input-group">
+            <i class="fas fa-envelope"></i>
+            <input type="email" name="email" id="signup-email" placeholder="Email" required>
+            <label for="signup-email">Email</label>
+        </div>
+        <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" name="password" id="signup-password" placeholder="Password" required>
+            <label for="signup-password">Password</label>
+        </div>
+        <div class="input-group">
+            <i class="fas fa-building-user"></i>
+            <input type="text" name="DepartmentID" id="DID" placeholder="DID" required>
+            <label for="DID">Department ID</label>
+        </div>
+        <input type="submit" class="btn" value="Sign Up">
+    </form>
+    <div class="links">
+        <div class="link-item">
+            <p>Already have an Account?</p>
+            <button id="signInButtonInstructor">Log In</button>
+        </div>
+        <div class="link-item">
+            <p>Want to Register as a Student?</p>
+            <button id="signUpButtonInstructor">Student</button>
+        </div>
+    </div>
+</div>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
