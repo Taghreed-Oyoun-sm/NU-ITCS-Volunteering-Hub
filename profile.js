@@ -7,6 +7,7 @@ function updateUserInfo() {
         document.getElementById('displayUserName').innerText = name;
         document.getElementById('displayUserEmail').innerText = email;
         alert("Information saved!");
+        window.location.href = 'home.html';
     } else {
         alert("Please fill in both name and email.");
     }
