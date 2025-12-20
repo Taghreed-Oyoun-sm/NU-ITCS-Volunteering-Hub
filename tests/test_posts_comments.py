@@ -23,17 +23,16 @@ def test_create_post_success(db_session: Session):
         tags=["Python", "Database"]
     )
     
-    # FIX: Pass student_id directly to the function instead of the DTO
+    # Pass student_id directly to the function
     new_post = create_post(db_session, post_data, student_id=1)
 
-    # Use post_id as used in your backend operations
     assert new_post.post_id is not None 
     assert new_post.title == "Python Help"
     assert "Python" in new_post.tags
 
 # 2. Test Searching Posts by Tag
 def test_search_posts_by_tag(db_session: Session):
-    # Setup: Create student and post
+    # Setup: Create student and post first
     student = Student(student_id=2, name="Searcher", email="s@nu.edu.eg")
     db_session.add(student)
     db_session.commit()
@@ -49,7 +48,7 @@ def test_search_posts_by_tag(db_session: Session):
 
 # 3. Test Matching Students by Post Tags
 def test_find_suitable_students(db_session: Session):
-    # FIX: Provide student_id manually to avoid NOT NULL constraint failure
+    # Setup: Create student with strength_areas
     student = Student(
         student_id=3,
         name="Test Student",
@@ -71,6 +70,7 @@ def test_create_comment_success(db_session: Session):
     student = Student(student_id=4, name="Commenter", email="c@nu.edu.eg")
     db_session.add(student)
     
+    # We use post_id=10 to match your Act section
     post = Post(post_id=10, title="Target Post", content="Content", student_id=4)
     db_session.add(post)
     db_session.commit()
