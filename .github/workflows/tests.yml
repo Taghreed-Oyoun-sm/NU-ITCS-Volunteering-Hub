@@ -24,4 +24,6 @@ jobs:
         pip install pytest pytest-asyncio httpx
 
     - name: Run tests
-      run: PYTHONPATH=. pytest -v
+      run: |
+        export PYTHONPATH=$PYTHONPATH:$(pwd)/NU-ITCS-Volunteering-Hub-backend-feature
+        pytest -v tests/
