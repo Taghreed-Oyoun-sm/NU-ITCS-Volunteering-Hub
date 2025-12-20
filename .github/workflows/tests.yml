@@ -6,7 +6,7 @@ on:
     paths:
       - 'backend/**'
       - 'tests/**'
-      - 'requirements.txt'
+      - 'requirementss.txt'
       - '.github/workflows/**'
   pull_request:
     branches: [ "main" ]
@@ -37,6 +37,6 @@ jobs:
 
     - name: Run tests
       run: |
-        # Use the current working directory as the path
-        export PYTHONPATH=$PYTHONPATH:$(pwd)
+        # This command finds every directory in your repo and adds them to the path
+        export PYTHONPATH=$PYTHONPATH:$(find . -type d | tr '\n' ':')
         pytest -v tests/
