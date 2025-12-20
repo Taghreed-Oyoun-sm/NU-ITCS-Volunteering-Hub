@@ -35,9 +35,9 @@ def test_create_and_get_student(db_session: Session):
     user_input = UserCreate(
         student_id=1,
         name="Alice",
-        email="alice@example.com",
+        email="alice@nu.edu.eg",
         password="password123",
-        year="First",
+        year="Freshman",
         track="CS",
         role="student",
         cgpa=3.8,
@@ -46,7 +46,7 @@ def test_create_and_get_student(db_session: Session):
     )
     student = create_user(db_session, user_input)
     assert student.name == "Alice"
-    assert student.email == "alice@example.com"
+    assert student.email == "alice@nu.edu.eg"
 
 # -------------------- POST TESTS -------------------- #
 def test_create_post(db_session: Session):
@@ -54,10 +54,10 @@ def test_create_post(db_session: Session):
     user_input = UserCreate(
         student_id=2,
         name="Bob",
-        email="bob@example.com",
+        email="bob@nu.edu.eg",
         password="password123",
-        year="Second",
-        track="IT",
+        year="Sophomore",
+        track="AI",
         role="student",
         cgpa=3.5,
         research_skills=False,
