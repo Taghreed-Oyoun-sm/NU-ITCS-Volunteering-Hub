@@ -11,10 +11,11 @@ def test_create_comment_success(db_session: Session):
     comment_data = CommentCreate(content="This is a very helpful post!", parent_id=None)
     
     result = create_comment(
-        db=db_session, 
-        comment_in=comment_data, 
-        student_id=10, 
-        post_id=1
+    db=db_session,
+    student_id=10,
+    post_id=1,
+    content=comment_data.content, # Pass the string inside the object
+    parent_id=comment_data.parent_id
     )
 
     assert result.content == "This is a very helpful post!"
