@@ -91,6 +91,25 @@
             </select>
             <label for="track">Track</label>
         </div>
+        <div class="input-group">
+            <i class="fas fa-graduation-cap"></i>
+            <input type="number" name="cgpa" id="cgpa" placeholder="CGPA" min="0.0" max="4.0" step="0.1" required>
+            <label for="cgpa">CGPA</label>
+            <option value="" disabled selected>Enter subject code or skill</option>
+        </div>
+
+        <div class="input-group">
+            <i class="fas fa-star"></i>
+            <input 
+                type="text" 
+                name="strengths" 
+                id="strengths" 
+                placeholder="E.g., MATH203, CSCI221, Research, JTA" 
+                required
+            >
+            <label for="strengths">Strength Areas</label>
+        </div>
+
         <input type="submit" class="btn" value="Sign Up">
     </form>
     <div class="links">

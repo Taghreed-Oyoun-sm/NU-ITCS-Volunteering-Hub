@@ -63,53 +63,61 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 1. Handle Sign Up Form Submission
     if (signUpForm) {
-        signUpForm.addEventListener('submit', async function(event) {
-            event.preventDefault();
+    signUpForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
 
-            const signUpData = {
-                student_id: parseInt(this.ID.value),
-                name: this.uName.value,
-                email: this['signup-email'].value,
-                year: this.year.value,
-                track: this.track.value,
-                role: this.role.value,
-                password: this['signup-password'].value
-            };
+        // Parse strengths as array
+        const strengthsArray = document.getElementById('strengths')
+            .value
+            .split(',')
+            .map(s => s.trim())
+            .filter(Boolean);
 
-            try {
-                const response = await fetch(`${BASE_URL}/signup`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(signUpData)
-                });
+        const signUpData = {
+            student_id: Number(this.ID.value),
+            name: this.uName.value,
+            email: this['signup-email'].value,
+            year: this.year.value,
+            track: this.track.value,
+            cgpa: parseFloat(this.cgpa.value),
+            password: this['signup-password'].value,
+            strength_areas: strengthsArray
+        };
 
-                const result = await response.json();
+        try {
+            const response = await fetch(`${BASE_URL}/signup`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(signUpData)
+            });
 
-                if (response.ok) {
-                    // alert('✅ Registration Successful! Student ID: ' + result.student_id);
-                    // Optionally switch to sign-in form
-                    window.location.href = 'profile.html';
-                } else {
-                    let errorMsg = '';
-                    if (result.detail) {
-                        if (Array.isArray(result.detail)) {
-                            errorMsg = result.detail.map(d => d.msg || d).join('\n');
-                        } else {
-                            errorMsg = result.detail;
-                        }
+            const result = await response.json();
+
+            if (response.ok) {
+                // alert('✅ Registration Successful! Student ID: ' + result.student_id);
+                window.location.href = 'profile.html';
+            } else {
+                let errorMsg = '';
+                if (result.detail) {
+                    if (Array.isArray(result.detail)) {
+                        errorMsg = result.detail.map(d => d.msg || d).join('\n');
                     } else {
-                        errorMsg = JSON.stringify(result);
+                        errorMsg = result.detail;
                     }
-                    alert('❌ Registration Failed: ' + errorMsg);
-                    console.error('Signup error:', result);
+                } else {
+                    errorMsg = JSON.stringify(result);
                 }
-
-            } catch (error) {
-                console.error('Network error:', error);
-                alert('⚠️ Connection Error. Make sure the backend server is running at http://127.0.0.1:8000.');
+                alert('❌ Registration Failed: ' + errorMsg);
+                console.error('Signup error:', result);
             }
-        });
-    }
+
+        } catch (error) {
+            console.error('Network error:', error);
+            alert('⚠️ Connection Error. Make sure the backend server is running at http://127.0.0.1:8000.');
+        }
+    });
+}
+
 
     // 2. Handle Log In Form Submission
     if (signInForm) {
@@ -144,10 +152,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (response.ok) {
                     // Save JWT to localStorage
                     localStorage.setItem('access_token', result.access_token);
+                    localStorage.setItem("user", JSON.stringify(result.user));
 
                     // alert('🎉 Login Successful!');
                     // Redirect to homepage
-                    window.location.href = 'profile.html';
+                    window.location.href = 'home.html';
                 } else {
                     alert('❌ Login Failed: ' + (result.detail || JSON.stringify(result)));
                 }

@@ -1,4 +1,8 @@
-const questions = [
+// ---------------- CONFIG ----------------
+const API_BASE = "http://127.0.0.1:8000"; // can still be used if backend needed
+
+// ---------------- STATIC QUESTIONS ----------------
+let questions = JSON.parse(localStorage.getItem("questions")) || [
     {
         id: 1,
         title: "How does recursion work in programming?",
@@ -6,9 +10,12 @@ const questions = [
         tag: "CSCI207",
         answers: "2 Answers",
         votes: 10,
-        userVoted: false, // Track if user has clicked upvote
+        userVoted: false,
         content: "I understand that a function calls itself, but how does it know when to stop?",
-        replies: ["The base case is the most important part; it acts as the exit condition.", "Think of it like a stack of plates; you add them until you're done, then take them off one by one."]
+        replies: [
+            "The base case is the most important part; it acts as the exit condition.",
+            "Think of it like a stack of plates; you add them until you're done, then take them off one by one."
+        ]
     },
     {
         id: 2,
@@ -19,9 +26,11 @@ const questions = [
         votes: 20,
         userVoted: false,
         content: "Is it better to use flex-basis or just set the width?",
-        replies: ["Flex-basis is preferred as it respects the flex-direction.", "Always use 'gap' instead of margins for spacing between items!"]
+        replies: [
+            "Flex-basis is preferred as it respects the flex-direction.",
+            "Always use 'gap' instead of margins for spacing between items!"
+        ]
     },
-
     {
         id: 3,
         title: "How to solve second-order differential equations?",
@@ -31,9 +40,11 @@ const questions = [
         votes: 5,
         userVoted: false,
         content: "I’m trying to understand the method of solving second-order differential equations with constant coefficients.",
-        replies: ["You can try the characteristic equation method; it helps determine the solution type.", "Don’t forget to check if it’s homogeneous or non-homogeneous."]
+        replies: [
+            "You can try the characteristic equation method; it helps determine the solution type.",
+            "Don’t forget to check if it’s homogeneous or non-homogeneous."
+        ]
     },
-
     {
         id: 4,
         title: "What are the key concepts in Logic Design?",
@@ -43,143 +54,131 @@ const questions = [
         votes: 8,
         userVoted: false,
         content: "I’m learning about combinational and sequential circuits. What should I focus on first?",
-        replies: ["Start with truth tables and Boolean algebra.", "Then move to combinational circuits before tackling sequential logic."]
+        replies: [
+            "Start with truth tables and Boolean algebra.",
+            "Then move to combinational circuits before tackling sequential logic."
+        ]
     }
 ];
 
 let nextId = questions.length + 1;
+let currentPostId = null;
 
-function displayQuestions(filterTag = "") {
-    const container = document.getElementById('questionsContainer');
-    if (!container) return;
+// ---------------- SAVE TO LOCALSTORAGE ----------------
+function saveQuestions() {
+    localStorage.setItem("questions", JSON.stringify(questions));
+}
+
+// ---------------- DISPLAY QUESTIONS ----------------
+function displayQuestions(filter = "") {
+    const container = document.getElementById("questionsContainer");
     container.innerHTML = "";
 
-    const filtered = questions.filter(q => 
-        q.tag.toLowerCase().includes(filterTag.toLowerCase())
-    );
+    questions
+        .filter(q => q.tag.toLowerCase().includes(filter.toLowerCase()))
+        .forEach(q => {
+            const card = document.createElement("div");
+            card.className = "question-card";
+            card.onclick = () => openQuestion(q.id);
 
-    filtered.forEach(q => {
-        const card = document.createElement('div');
-        card.className = 'question-card clickable';
-        card.onclick = () => openQuestion(q.id);
+            card.innerHTML = `
+                <h3>${q.title}</h3>
+                <p>${q.tag} | ${q.meta}</p>
+                <span>▲ ${q.votes} Votes</span>
+            `;
+            container.appendChild(card);
+        });
 
-        card.innerHTML = `
-            <h3 class="question-title">${q.title}</h3>
-            <p class="question-meta">${q.meta} * ${q.answers}</p>
-            <div class="card-footer">
-                <span class="votes">▲ ${q.votes} Votes</span>
-                <span class="tag-label">${q.tag}</span>
-            </div>
-        `;
-        container.appendChild(card);
-    });
+    saveQuestions();
 }
 
-function handleUpvote(id) {
-    const q = questions.find(item => item.id === id);
-    
-    if (q.userVoted) {
-        q.votes -= 1;
-        q.userVoted = false;
-    } else {
-        q.votes += 1;
-        q.userVoted = true;
-    }
-    
-    openQuestion(id); 
-    displayQuestions(); 
-}
 
-function postAnswer(id) {
-    const answerInput = document.getElementById('newAnswerText');
-    const answerText = answerInput.value.trim();
-    if (!answerText) return alert("Please write an answer first!");
 
-    const q = questions.find(item => item.id === id);
-    q.replies.push(answerText);
-    q.answers = `${q.replies.length} Answers`;
-    
-    answerInput.value = "";
-    openQuestion(id);
-    displayQuestions();
-}
-
+// ---------------- OPEN SINGLE QUESTION ----------------
 function openQuestion(id) {
     const q = questions.find(item => item.id === id);
-    document.getElementById('exploreSection').style.display = 'none';
-    document.getElementById('singleQuestionContainer').style.display = 'block';
+    if (!q) return;
 
-    document.getElementById('detailTag').innerText = q.tag;
-    
-    // Change button color if voted
-    const voteBtnStyle = q.userVoted 
-        ? "background: #0364a0; color: white;" 
-        : "background: #e0f2f1; color: #0364a0;";
+    currentPostId = id;
+    document.getElementById("exploreSection").style.display = "none";
+    document.getElementById("singleQuestionContainer").style.display = "block";
+    document.getElementById("detailTag").textContent = q.tag;
 
-    document.getElementById('detailedContent').innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-            <h1 style="color: #333; margin-bottom: 20px; flex: 1;">${q.title}</h1>
-            <button onclick="handleUpvote(${q.id})" style="${voteBtnStyle} border: 1px solid #0364a0; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-left: 20px; transition: 0.3s;">
-                ▲ ${q.votes} Votes
-            </button>
-        </div>
-        <p style="font-size: 1.1em; color: #555; line-height: 1.6;">${q.content}</p>
-        <hr style="border: 0.5px solid #eee; margin: 30px 0;">
-        <h3 style="color: #fba203;">Answers:</h3>
-        <div id="answersList">
-            ${q.replies.length > 0 ? q.replies.map(r => `<div class="answer-card">${r}</div>`).join('') : '<p style="color: #888;">No answers yet.</p>'}
-        </div>
+    document.getElementById("detailedContent").innerHTML = `
+        <h1>${q.title}</h1>
+        <p>${q.content}</p>
+        <hr>
+        <h3>Answers</h3>
+        ${q.replies.length
+            ? q.replies.map(a => `<div class="answer-card">${a}</div>`).join("")
+            : "<p>No answers yet</p>"
+        }
     `;
-
-    document.getElementById('submitAnswerBtn').onclick = () => postAnswer(id);
-    window.scrollTo(0, 0);
 }
 
+// ---------------- POST ANSWER ----------------
+document.getElementById("submitAnswerBtn").addEventListener("click", () => {
+    const text = document.getElementById("newAnswerText").value.trim();
+    if (!text) return alert("Please write an answer first!");
+
+    const q = questions.find(item => item.id === currentPostId);
+    q.replies.push(text);
+    document.getElementById("newAnswerText").value = "";
+    openQuestion(currentPostId);
+    displayQuestions();
+});
+
+// ---------------- SUBMIT NEW QUESTION ----------------
+document.getElementById('submitAsk').addEventListener('click', () => {
+    const title = document.getElementById('askTitle').value.trim();
+    const content = document.getElementById('askContent').value.trim();
+    const tag = document.getElementById('askTag').value.trim();
+
+    if (!title || !content || !tag) return alert("Title, Content, and Tag are required!");
+
+    questions.unshift({
+        id: nextId++,
+        title,
+        content,
+        tag,
+        meta: "Asked just now",
+        votes: 0,
+        userVoted: false,
+        replies: []
+    });
+
+    displayQuestions();
+
+    document.getElementById('askQuestionPage').style.display = 'none';
+    document.getElementById('askQuestionBtn').style.display = 'block';
+    document.getElementById('askTitle').value = "";
+    document.getElementById('askContent').value = "";
+    document.getElementById('askTag').value = "";
+});
+
+// ---------------- SEARCH ----------------
+document.getElementById('searchBtn').addEventListener('click', () => {
+    const tag = document.getElementById("tagSearchInput").value.trim();
+    displayQuestions(tag);
+});
+
+// ---------------- SHOW/HIDE ASK FORM ----------------
+document.getElementById('askQuestionBtn').addEventListener('click', () => {
+    document.getElementById('askQuestionPage').style.display = 'block';
+    document.getElementById('askQuestionBtn').style.display = 'none';
+});
+document.getElementById('backFromAsk').addEventListener('click', () => {
+    document.getElementById('askQuestionPage').style.display = 'none';
+    document.getElementById('askQuestionBtn').style.display = 'block';
+});
+
+// ---------------- CLOSE SINGLE QUESTION ----------------
 function closeQuestion() {
     document.getElementById('singleQuestionContainer').style.display = 'none';
     document.getElementById('exploreSection').style.display = 'block';
 }
 
+// ---------------- INITIALIZE ----------------
 document.addEventListener('DOMContentLoaded', () => {
     displayQuestions();
-
-    // Form logic
-    document.getElementById('askQuestionBtn').addEventListener('click', () => {
-        document.getElementById('askQuestionPage').style.display = 'block';
-        document.getElementById('askQuestionBtn').style.display = 'none';
-    });
-
-    document.getElementById('backFromAsk').addEventListener('click', () => {
-        document.getElementById('askQuestionPage').style.display = 'none';
-        document.getElementById('askQuestionBtn').style.display = 'block';
-    });
-
-    document.getElementById('submitAsk').addEventListener('click', () => {
-        const title = document.getElementById('askTitle').value.trim();
-        const content = document.getElementById('askContent').value.trim();
-        const tag = document.getElementById('askTag').value.trim();
-
-        if (!title || !content || !tag) return alert("Title, Content, and Tag are mandatory!");
-
-        questions.unshift({
-            id: nextId++,
-            title: title,
-            content: content,
-            tag: tag.toUpperCase(),
-            meta: document.getElementById('askMeta').value.trim() || "Asked just now",
-            answers: "0 Answers",
-            votes: 0,
-            userVoted: false,
-            replies: []
-        });
-
-        displayQuestions();
-        document.getElementById('askQuestionPage').style.display = 'none';
-        document.getElementById('askQuestionBtn').style.display = 'block';
-    });
-
-    // Search logic
-    document.getElementById('searchBtn').addEventListener('click', () => {
-        displayQuestions(document.getElementById('tagSearchInput').value.trim());
-    });
 });
