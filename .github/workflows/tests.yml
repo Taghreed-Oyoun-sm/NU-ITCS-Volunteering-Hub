@@ -41,7 +41,7 @@ jobs:
       env:
         # This overrides the os.getenv("DATABASE_URL") in db_connection.py
         # without we having to change the actual python file.
-       DATABASE_URL = "sqlite:///./backend.db"
+       DATABASE_URL: "sqlite:///:memory:"
       run: |
         # 1. FIX THE PATH: 
         # Adding 'backend' to PYTHONPATH makes 'backend.db_connection' 
