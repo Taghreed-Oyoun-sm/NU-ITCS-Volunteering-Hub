@@ -1,0 +1,164 @@
+@import url("styleA.css");
+
+/* Container */
+.profile-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+/* Card */
+.profile-card {
+    background: #ffffff;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow:0 20px 35px rgba(0, 0, 1, 0.9);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Avatar */
+.profile-avatar {
+    font-size: 50px;
+    background: #fba203;
+    color: white;
+    width: 90px;
+    height: 90px;
+    line-height: 90px;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+}
+
+/* Section */
+.profile-section {
+    text-align: left;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.profile-section h3 {
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+/* Inputs */
+.profile-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.3s;
+}
+
+.profile-input:focus {
+    border-color: #fba203;
+    box-shadow: 0 0 5px rgba(251, 162, 3, 0.3);
+}
+
+/* Save Button */
+.save-btn {
+    width: 100%;
+    background: #fba203;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.save-btn:hover {
+    background: #e69500;
+}
+
+/* Logout Button */
+.logout-trigger-btn {
+    width: 100%;
+    background: #ff4757;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.logout-trigger-btn:hover {
+    background: #e63d50;
+}
+
+/* Modal Styling */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background: #ffffff;
+    padding: 30px 25px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.modal-actions button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.confirm-btn { 
+    background: #ff4757; 
+    color: white; 
+}
+
+.confirm-btn:hover {
+    background: #e63d50;
+}
+
+.cancel-btn { 
+    background: #eee; 
+    color: #555; 
+}
+
+.cancel-btn:hover {
+    background: #ddd;
+}
+
+/* Helper text for inputs */
+.profile-section small {
+    color: #777;
+    font-size: 0.85rem;
+}

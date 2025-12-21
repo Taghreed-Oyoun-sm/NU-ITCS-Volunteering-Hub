@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styleA.css">
+    <script src="ask.js" defer></script>
+    <title>Ask - NovaThink</title>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navdiv">
+            <div class="logo"><img src="Novathink_OwlNBG.png" alt="Owl" width="40"></div>
+            <div class="logo2"><img src="Novathink-TitleNBG.png" alt="title" width="100"></div>
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="ask.html">Ask</a></li>
+                <li><a href="profile.html">Profile</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="page-content">
+        <section class="explore-section" id="exploreSection">
+            <div class="container">
+                <div class="explore-header" style="display:flex; justify-content: space-between; align-items:center; margin-bottom:30px;">
+                    <h2 class="section-title">Explore Questions</h2>
+                </div>
+
+                <div id="askQuestionPage" style="display:none; background: rgba(255,255,255,0.8); padding: 25px; border-radius: 12px; margin-bottom: 30px; border: 2px solid #fba203;">
+                    <div style="display:flex; justify-content: space-between;">
+                        <h3>Create New Post</h3>
+                        <button id="backFromAsk" style="background:none; border:none; cursor:pointer;">✕</button>
+                    </div>
+                    <input type="text" id="askTitle" placeholder="Question Title..." class="form-input">
+                    <!-- <input type="text" id="askMeta" placeholder="Meta info (e.g. Asked in Software Engineering)" class="form-input"> -->
+                    <textarea id="askContent" placeholder="Describe your question..." class="form-input" style="min-height:100px;"></textarea>
+                    <div style="display:flex; gap: 10px;">
+                        <input type="text" id="askTag" placeholder="Tag (REQUIRED)" class="form-input" style="width:30%; border: 2px solid #fba203;">
+                        <button id="submitAsk" class="primary-btn">Post Question</button>
+                    </div>
+                </div>
+
+                <div class="search-area">
+
+                    <div class="search-bar-container">
+                        <input type="text" id="tagSearchInput" placeholder="Filter by tag..." class="search-input">
+                        <button class="search-button" id="searchBtn">Search</button>
+                    </div>
+
+                    <button id="askQuestionBtn" class="primary-btn ask-btn">+ Ask Question</button>
+
+                </div>
+
+
+                <div class="questions-grid" id="questionsContainer"></div>
+            </div>
+        </section>
+
+        <div id="singleQuestionContainer" style="display: none; padding: 40px; background: white; margin: 40px auto; max-width: 1000px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <button onclick="closeQuestion()" class="back-btn">← Back to Explore</button>
+                <span id="detailTag" class="tag-label" style="background: #fba203; color: white;"></span>
+            </div>
+            <div id="detailedContent"></div>
+            <hr style="border: 0.5px solid #eee; margin: 30px 0;">
+            <h3>Your Answer</h3>
+            <textarea id="newAnswerText" placeholder="Write your answer..." class="form-input" style="min-height:100px; margin-top:10px;"></textarea>
+            <button id="submitAnswerBtn" class="primary-btn">Post Answer</button>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="waves">
+            <div class="wave" id="wave1"></div>
+            <div class="wave" id="wave2"></div>
+        </div>
+        <p>2025 NOVACORP | All Rights Reserved | Supervised by : Dr. Mohamed Elgazzar & ENG. Monier Lawande</p>
+    </footer>
+</body>
+</html>
