@@ -6,7 +6,7 @@ from backend.posts.post_model import Post
 from backend.students.student_model import Student
 
 def setup_post(db: Session, pid: int):
-    student = Student(student_id=pid+500, name="A", email=f"{pid}@n.e", year="J", track="C", cgpa=3.0)
+    student = Student(student_id=pid+500, name="Ahmed Mohamed", email=f"{pid}@nu.edu.eg", year="Junior", track="CS", cgpa=3.0)
     db.add(student)
     db.flush()
     post = Post(post_id=pid, title="T", content="C", student_id=student.student_id)
