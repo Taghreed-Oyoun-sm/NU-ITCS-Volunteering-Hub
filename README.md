@@ -46,11 +46,11 @@ The **NU ITCS Volunteering Hub** connects students who need help with those who 
 | Backend     | FastAPI (Python)           |
 | Database    | MySQL                      |
 | Auth        | JWT + bcrypt               |
-| Deployment  |                            |
+| Deployment  | GitHub Pages               |
 | Version Control |GitHub Projects (Agile) |
 
 ---
-
+Our Wedsite Link: [https://taghreed-oyoun-sm.github.io/NU-ITCS-Volunteering-Hub/frontend/index.html]
 ### Quick Start (Run Locally)
 
 #### Backend
