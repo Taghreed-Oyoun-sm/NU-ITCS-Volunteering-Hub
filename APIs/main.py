@@ -3,16 +3,16 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from backend.db_connection import engine, Base
 
-# 🔥 IMPORT MODELS (THIS CREATES TABLES)
+
 from backend.students.student_model import Student
 from backend.posts.post_model import Post
 from backend.comments.comment_model import Comment
-from backend.reports.report_model import Report  # ✅ 1. ADD THIS
+from backend.reports.report_model import Report  
 
 from APIs.routers.student_router import router as student_router
 from APIs.routers.post_router import router as post_router
 from APIs.routers.comment_router import router as comment_router
-from APIs.routers.report_router import router as report_router  # ✅ 2. ADD THIS
+from APIs.routers.report_router import router as report_router  
 
 app = FastAPI(title="NU Volunteering Hub API")
 
@@ -24,13 +24,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 🔥 NOW tables will be created
+
 Base.metadata.create_all(bind=engine)
 
 app.include_router(student_router)
 app.include_router(post_router)
 app.include_router(comment_router)
-app.include_router(report_router)  # ✅ 3. ADD THIS
+app.include_router(report_router)  
 
 @app.get("/")
 def root():
