@@ -1,81 +1,812 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styleA.css">
-    <script src="ask.js" defer></script>
-    <title>Ask - NovaThink</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ask | NU Volunteering Hub</title>
+<style>
+* {
+  font-family: 'Inter', sans-serif;
+}
+
+:root {
+  --primary: #1f3a5f;
+  --accent: #3fa9a6;
+  --background: #f5f7fa;
+  --card-bg: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --reported: #f87171;
+}
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Inter', 'Segoe UI', sans-serif; }
+body { background-color: var(--background); color: var(--text-main); }
+/* ===== NAVBAR (COPY EXACTLY IN ALL PAGES) ===== */
+nav {
+  background-color: #1f3a5f;
+  padding: 18px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  position: relative;
+}
+
+nav .logo {
+  font-size: 22px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 48px;        
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); 
+}
+
+nav ul li a {
+  color: #e2e8f0;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+nav ul li a:hover {
+  color: #3fa9a6;
+}
+
+.container { max-width: 1200px; margin: 40px auto; display:grid; grid-template-columns: 3fr 1fr; gap: 30px; padding: 0 30px; }
+.ask-box { background-color: var(--card-bg); padding:24px; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,0.06); margin-bottom:30px; }
+.ask-box h2 { margin-bottom: 15px; color: var(--primary); }
+.ask-box input, .ask-box textarea { width:100%; padding:12px; margin-bottom:12px; border-radius:8px; border:1px solid var(--border); font-size:14px; }
+.ask-box button { background-color: var(--accent); color:white; padding:10px 20px; border:none; border-radius:8px; cursor:pointer; font-weight:600; }
+.question-card { background-color: var(--card-bg); padding:20px; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,0.05); margin-bottom:20px; cursor:pointer; transition: transform 0.2s, box-shadow 0.2s; }
+.question-card:hover { transform: translateY(-4px); box-shadow:0 12px 24px rgba(0,0,0,0.1); }
+.question-card h3 { color: var(--primary); margin-bottom:8px; }
+.tags { margin-bottom:8px; }
+.tag { display:inline-block; background-color:#e6f6f5; color:var(--accent); padding:4px 10px; border-radius:20px; font-size:12px; margin-right:6px; cursor:pointer; }
+.vote-box { display:flex; align-items:center; gap:8px; font-weight:600; color: var(--accent); cursor:pointer; user-select:none; }
+.sidebar { background-color: var(--card-bg); padding:20px; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,0.05); height: fit-content; }
+.sidebar h4 { margin-bottom:12px; color: var(--primary); }
+.sidebar input { width:100%; padding:10px; border-radius:8px; border:1px solid var(--border); margin-bottom:15px; }
+.popular-tags .tag { margin-bottom:6px; display:inline-block; }
+.modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:1000; }
+.modal-content { background-color: var(--card-bg); padding:30px; border-radius:12px; width:90%; max-width:800px; max-height:90%; overflow-y:auto; position:relative; transform: scale(0.8); opacity:0; transition: transform 0.3s ease, opacity 0.3s ease; }
+.modal.show .modal-content { transform: scale(1); opacity:1; }
+.close-btn { position:absolute; top:15px; right:15px; cursor:pointer; font-size:20px; font-weight:bold; color: var(--primary); }
+.comment { margin-top:15px; padding-left:15px; border-left:3px solid var(--border); position:relative; }
+.comment .author { font-weight:600; font-size:14px; }
+.comment .text { font-size:14px; margin:6px 0; }
+.comment-actions { display:flex; gap:15px; font-size:13px; color: var(--accent); cursor:pointer; user-select:none; }
+.comment.reported { border-left:3px solid var(--reported); }
+.comment .comment { margin-top:10px; }
+.reply-box { margin-top:10px; }
+.reply-box input { width:calc(100% - 90px); padding:6px 10px; border-radius:6px; border:1px solid var(--border); margin-right:6px; }
+.reply-box button { background-color: var(--accent); color:white; padding:6px 14px; border:none; border-radius:6px; cursor:pointer; font-weight:600; }
+#notification { position: fixed; top: 20px; right: 20px; background-color: var(--accent); color: white; padding:10px 20px; border-radius:8px; display:none; opacity:0; transition: opacity 0.3s; z-index:2000; }
+.indent { margin-left:20px; }
+
+.more-btn:hover {
+  color: var(--accent);
+  background: #f1f5f9;
+  border-radius: 50%;
+}
+
+.more-dropdown button:hover {
+  background: #f1f5f9;
+}
+
+.more-dropdown button:active {
+  background: #e2e8f0;
+}
+
+.more-menu {
+  z-index: 30;
+}
+
+.question-card input, .question-card textarea {
+  font-family: 'Inter', sans-serif;
+}
+
+.question-card textarea {
+  min-height: 120px;
+}
+
+:root {
+  --primary: #1f3a5f;
+  --accent: #3fa9a6;
+  --background: #f5f7fa;
+  --card-bg: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --reported: #f87171;
+}
+
+body.dark-mode {
+  --background: #0f172a;
+  --card-bg: #1e293b;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --border: #334155;
+  --primary: #60a5fa;
+  --accent: #5eead4;
+}
+
+#dark-mode-toggle {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  padding: 8px;
+  line-height: 1;
+  transition: transform 0.2s, color 0.2s;
+  margin-left: auto;           /* This pushes it to the far right */
+  flex-shrink: 0;
+}
+
+body.dark-mode .question-card,
+body.dark-mode .ask-box,
+body.dark-mode .sidebar,
+body.dark-mode .modal-content {
+  background: var(--card-bg);
+  color: var(--text-main);
+}
+
+body.dark-mode .tag {
+  background: #334155;
+  color: var(--accent);
+}
+</style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="navdiv">
-            <div class="logo"><img src="Novathink_OwlNBG.png" alt="Owl" width="40"></div>
-            <div class="logo2"><img src="Novathink-TitleNBG.png" alt="title" width="100"></div>
-            <ul>
-                <li><a href="home.html">Home</a></li>
-                <li><a href="ask.html">Ask</a></li>
-                <li><a href="profile.html">Profile</a></li>
-            </ul>
+
+<nav>
+  <div class="logo">NU Volunteering Hub</div>
+  <ul class="nav-links">
+    <li><a href="home1.html">Home</a></li>
+    <li><a href="ask1.html">Ask</a></li>
+    <li><a href="profile1.html">Profile</a></li>
+  </ul>
+
+  <button id="dark-mode-toggle" style="background:none; border:none; font-size:24px; cursor:pointer; color:white; margin-left:auto;">
+  🌙
+</button>
+</nav>
+
+
+<div class="container">
+  <div>
+    <div class="ask-box">
+      <h2>Ask a Question</h2>
+      <input type="text" id="new-title" placeholder="Question title" />
+      <textarea rows="4" id="new-desc" placeholder="Describe your question clearly..."></textarea>
+      <input type="text" id="new-tags" placeholder="Tags (comma separated)" />
+      <button onclick="postQuestion()">Post Question</button>
+    </div>
+    <div id="questions-list"></div>
+  </div>
+  <aside class="sidebar">
+    <h4>Search by Tag</h4>
+    <input type="text" id="search-tag" placeholder="Search tags..." oninput="filterByTag()" />
+    <h4>Popular Tags</h4>
+    <div class="popular-tags" id="popular-tags"></div>
+
+    <button onclick="showOnlyMyQuestions = !showOnlyMyQuestions; renderQuestions(); this.textContent = showOnlyMyQuestions ? 'Show All Questions' : 'Your Questions Only';" style="margin-top:15px; width:100%; padding:10px; background:var(--accent); color:white; border:none; border-radius:8px; cursor:pointer;">
+  Your Questions Only
+  </button>
+
+    <button onclick="clearAllData()" style="margin-top: 20px; width: 100%; background: #f87171; color: white; padding: 10px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+      Clear All Questions & Comments
+    </button>
+    </aside>
+  </div>
+
+<div id="notification"></div>
+
+<div class="modal" id="questionModal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <div id="modal-question"></div>
+    <!-- Main comment box -->
+    <div class='reply-box' style='margin-top:20px;'>
+      <input type='text' id='main-comment-input' placeholder='Add a comment...' />
+      <button onclick='addMainComment()'>Comment</button>
+    </div>
+    <div class="comments" id="modal-comments"></div>
+  </div>
+</div>
+
+<script>
+let questions = JSON.parse(localStorage.getItem('nuVolunteeringQuestions')) || [
+  { 
+    title: "What is the difference between stack and queue?", 
+    desc: "Can someone explain the difference with examples?", 
+    tags: ["Data Structures","CS101","Algorithms"], 
+    likes: 12, 
+    liked: false, 
+    reported: false, 
+    comments: [ 
+      { 
+        author: "Ahmed", 
+        text: "Stack is LIFO, queue is FIFO", 
+        likes: 0, 
+        liked: false, 
+        reported: false, 
+        replies: [ 
+          { author: "Sara", text: "Good explanation!", likes: 0, liked: false, reported: false, replies: [] } 
+        ] 
+      } 
+    ] 
+  },
+  { 
+    title: "How to reverse a linked list in Java?", 
+    desc: "I am having trouble with reversing a linked list.", 
+    tags: ["Java","DS","Linked List"], 
+    likes: 5, 
+    liked: false, 
+    reported: false, 
+    comments: [] 
+  },
+  { 
+    title: "Difference between abstract class and interface?", 
+    desc: "I am confused when to use abstract class and when to use interface.", 
+    tags: ["Java","OOP","Concepts"], 
+    likes: 8, 
+    liked: false, 
+    reported: false, 
+    comments: [] 
+  }
+];
+
+let editingComment = null;
+let showOnlyMyQuestions = false;
+let darkMode = localStorage.getItem('darkMode') === 'true';
+
+// Helper to get current time for sorting/new questions
+function getCurrentTime() {
+  return Date.now();
+}
+
+// Add timestamp to new questions & comments
+// Update postQuestion(), addMainComment(), addReply() to include timestamp: getCurrentTime()
+
+let currentQuestion = null;
+
+function saveQuestions() {
+  localStorage.setItem('nuVolunteeringQuestions', JSON.stringify(questions));
+}
+
+function showNotification(msg) {
+  const n = document.getElementById('notification');
+  n.innerText = msg;
+  n.style.display = 'block';
+  setTimeout(() => { n.style.opacity = 1; }, 10);
+  setTimeout(() => { 
+    n.style.opacity = 0; 
+    setTimeout(() => { n.style.display = 'none'; }, 300); 
+  }, 1500);
+}
+
+function postQuestion() {
+  const title = document.getElementById('new-title').value.trim();
+  const desc = document.getElementById('new-desc').value.trim();
+  const tags = document.getElementById('new-tags').value.split(',').map(t => t.trim()).filter(t => t);
+  
+  if (!title || !desc) {
+    showNotification('Title and description required!');
+    return;
+  }
+
+  questions.push({
+  title,
+  desc,
+  tags,
+  likes: 0,
+  liked: false,
+  reported: false,
+  comments: [],
+  author: 'You',
+  timestamp: getCurrentTime()
+});
+
+  saveQuestions();
+  renderQuestions();
+  document.getElementById('new-title').value = '';
+  document.getElementById('new-desc').value = '';
+  document.getElementById('new-tags').value = '';
+  showNotification('Question posted!');
+}
+
+function renderQuestions(filtered = questions) {
+  let toRender = [...filtered];
+
+  // Apply "Your Questions Only" filter (if you kept the button)
+  if (showOnlyMyQuestions) {
+    toRender = toRender.filter(q => q.author === 'You');
+  }
+
+  // Always sort by most liked (default behavior)
+  toRender.sort((a, b) => b.likes - a.likes);
+
+  const container = document.getElementById('questions-list');
+  container.innerHTML = '';
+
+  toRender.forEach((q, i) => {
+    const originalIndex = questions.indexOf(q);
+    const isEditing = editingQuestionIndex === originalIndex;
+    const commentCount = countComments(q.comments);
+
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.style.position = 'relative';
+
+    let contentHTML = '';
+
+    if (isEditing) {
+      // Edit mode (unchanged)
+      contentHTML = `
+        <div style="padding: 16px;">
+          <input type="text" id="edit-title-${originalIndex}" value="${q.title.replace(/"/g, '&quot;')}" 
+                 style="width:100%; padding:10px; margin-bottom:12px; border:1px solid var(--border); border-radius:8px; font-size:16px; font-weight:600; background:var(--card-bg); color:var(--text-main);" />
+          <textarea id="edit-desc-${originalIndex}" rows="5" 
+                    style="width:100%; padding:10px; margin-bottom:12px; border:1px solid var(--border); border-radius:8px; resize:vertical; background:var(--card-bg); color:var(--text-main);">${q.desc.replace(/"/g, '&quot;')}</textarea>
+          <input type="text" id="edit-tags-${originalIndex}" value="${q.tags.join(', ')}" 
+                 placeholder="Tags (comma separated)" 
+                 style="width:100%; padding:10px; margin-bottom:12px; border:1px solid var(--border); border-radius:8px; background:var(--card-bg); color:var(--text-main);" />
+          <div style="display:flex; gap:12px; justify-content:flex-end;">
+            <button onclick="cancelEditQuestion()" 
+                    style="padding:8px 16px; background:#cbd5e1; color:#1e293b; border:none; border-radius:6px; cursor:pointer;">
+              Cancel
+            </button>
+            <button onclick="saveEditQuestion(${originalIndex})" 
+                    style="padding:8px 16px; background:var(--accent); color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600;">
+              Save Changes
+            </button>
+          </div>
         </div>
-    </nav>
-
-    <main class="page-content">
-        <section class="explore-section" id="exploreSection">
-            <div class="container">
-                <div class="explore-header" style="display:flex; justify-content: space-between; align-items:center; margin-bottom:30px;">
-                    <h2 class="section-title">Explore Questions</h2>
-                </div>
-
-                <div id="askQuestionPage" style="display:none; background: rgba(255,255,255,0.8); padding: 25px; border-radius: 12px; margin-bottom: 30px; border: 2px solid #fba203;">
-                    <div style="display:flex; justify-content: space-between;">
-                        <h3>Create New Post</h3>
-                        <button id="backFromAsk" style="background:none; border:none; cursor:pointer;">✕</button>
-                    </div>
-                    <input type="text" id="askTitle" placeholder="Question Title..." class="form-input">
-                    <!-- <input type="text" id="askMeta" placeholder="Meta info (e.g. Asked in Software Engineering)" class="form-input"> -->
-                    <textarea id="askContent" placeholder="Describe your question..." class="form-input" style="min-height:100px;"></textarea>
-                    <div style="display:flex; gap: 10px;">
-                        <input type="text" id="askTag" placeholder="Tag (REQUIRED)" class="form-input" style="width:30%; border: 2px solid #fba203;">
-                        <button id="submitAsk" class="primary-btn">Post Question</button>
-                    </div>
-                </div>
-
-                <div class="search-area">
-
-                    <div class="search-bar-container">
-                        <input type="text" id="tagSearchInput" placeholder="Filter by tag..." class="search-input">
-                        <button class="search-button" id="searchBtn">Search</button>
-                    </div>
-
-                    <button id="askQuestionBtn" class="primary-btn ask-btn">+ Ask Question</button>
-
-                </div>
-
-
-                <div class="questions-grid" id="questionsContainer"></div>
+      `;
+    } else {
+      // Normal view
+      contentHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; padding-right: 40px;">
+          <div style="flex: 1;">
+            <div class='vote-box' onclick='toggleLike(${originalIndex},"post")'>👍 ${q.likes}</div>
+            <h3>${q.title}</h3>
+            <div style="font-size:13px; color:var(--text-muted); margin-top:4px; margin-bottom:8px;">
+              ${commentCount} ${commentCount === 1 ? 'comment' : 'comments'}
             </div>
-        </section>
-
-        <div id="singleQuestionContainer" style="display: none; padding: 40px; background: white; margin: 40px auto; max-width: 1000px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <button onclick="closeQuestion()" class="back-btn">← Back to Explore</button>
-                <span id="detailTag" class="tag-label" style="background: #fba203; color: white;"></span>
+          </div>
+          <div class="more-menu" style="position: relative;">
+            <button 
+              class="more-btn"
+              onclick="toggleMoreMenu(${originalIndex}, event)"
+              style="background:none; border:none; font-size:20px; cursor:pointer; color:var(--text-muted); padding:4px 8px;"
+            >⋯</button>
+            <div id="menu-${originalIndex}" class="more-dropdown" style="display:none; position:absolute; top:30px; right:0; background:var(--card-bg); border:1px solid var(--border); border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.15); min-width:160px; z-index:20;">
+              <button onclick="startEditQuestion(${originalIndex}); event.stopPropagation();" 
+                      style="width:100%; text-align:left; padding:10px 16px; border:none; background:none; cursor:pointer; font-size:14px; color:var(--text-main);">
+                Edit Question
+              </button>
+              <button onclick="deleteQuestion(${originalIndex}); event.stopPropagation();" 
+                      style="width:100%; text-align:left; padding:10px 16px; border:none; background:none; cursor:pointer; font-size:14px; color:var(--text-main);">
+                Delete Question
+              </button>
+              <button onclick="reportQuestion(${originalIndex}); event.stopPropagation();" 
+                      style="width:100%; text-align:left; padding:10px 16px; border:none; background:none; cursor:pointer; font-size:14px; color:#f87171;">
+                Report Question
+              </button>
             </div>
-            <div id="detailedContent"></div>
-            <hr style="border: 0.5px solid #eee; margin: 30px 0;">
-            <h3>Your Answer</h3>
-            <textarea id="newAnswerText" placeholder="Write your answer..." class="form-input" style="min-height:100px; margin-top:10px;"></textarea>
-            <button id="submitAnswerBtn" class="primary-btn">Post Answer</button>
+          </div>
         </div>
-    </main>
+        <div class='tags' style="margin-top: 12px;">
+          ${q.tags.map(t => `<span class='tag' onclick='filterTagClick("${t}")'>${t}</span>`).join('')}
+        </div>
+      `;
+    }
 
-    <footer class="footer">
-        <div class="waves">
-            <div class="wave" id="wave1"></div>
-            <div class="wave" id="wave2"></div>
+    card.innerHTML = contentHTML;
+
+    // Reported style
+    if (q.reported) {
+      card.style.borderLeft = '4px solid var(--reported)';
+      card.style.paddingLeft = '16px';
+    }
+
+    // Open modal only on normal view clicks
+    if (!isEditing) {
+      card.onclick = (e) => {
+        if (!e.target.closest('.more-btn') && !e.target.closest('.more-dropdown button')) {
+          openModal(originalIndex);
+        }
+      };
+    }
+
+    container.appendChild(card);
+  });
+
+  renderPopularTags();
+}
+
+function countComments(comments) {
+  let count = comments.length;
+  for (const c of comments) {
+    if (c.replies && c.replies.length > 0) {
+      count += countComments(c.replies);
+    }
+  }
+  return count;
+}
+
+// New function: Toggle the more menu
+function toggleMoreMenu(index, event) {
+  event.stopPropagation();
+  const menu = document.getElementById(`menu-${index}`);
+  const isOpen = menu.style.display === 'block';
+  
+  // Close all other menus first
+  document.querySelectorAll('.more-dropdown').forEach(m => m.style.display = 'none');
+  
+  // Toggle this one
+  menu.style.display = isOpen ? 'none' : 'block';
+}
+
+// New function: Report the entire question
+function reportQuestion(index) {
+  if (!confirm(`Are you sure you want to report this question?\n\n"${questions[index].title}"`)) return;
+  questions[index].reported = !questions[index].reported;
+  saveQuestions();
+  showNotification(questions[index].reported ? 'Question reported!' : 'Report removed');
+  renderQuestions();
+  document.querySelectorAll('.more-dropdown').forEach(m => m.style.display = 'none');
+}
+
+// Track which question is being edited
+let editingQuestionIndex = null;
+
+function startEditQuestion(index) {
+  editingQuestionIndex = index;
+  renderQuestions(); // Re-render to show edit form
+}
+
+function saveEditQuestion(index) {
+  const titleInput = document.getElementById(`edit-title-${index}`);
+  const descInput = document.getElementById(`edit-desc-${index}`);
+  const tagsInput = document.getElementById(`edit-tags-${index}`);
+
+  if (!titleInput || !descInput) return;
+
+  const newTitle = titleInput.value.trim();
+  const newDesc = descInput.value.trim();
+  const newTags = tagsInput.value.split(',').map(t => t.trim()).filter(t => t);
+
+  if (!newTitle || !newDesc) {
+    showNotification('Title and description are required!');
+    return;
+  }
+
+  questions[index].title = newTitle;
+  questions[index].desc = newDesc;
+  questions[index].tags = newTags;
+
+  editingQuestionIndex = null;
+  saveQuestions();
+  showNotification('Question updated!');
+  renderQuestions();
+
+  // If this question is open in modal, refresh modal too
+  if (currentQuestion === index) {
+    openModal(index);
+  }
+}
+
+function cancelEditQuestion() {
+  editingQuestionIndex = null;
+  renderQuestions();
+}
+
+// Your existing deleteQuestion() can stay the same, but add closing menus
+function deleteQuestion(index) {
+  if (confirm("Are you sure you want to delete this question? This cannot be undone.")) {
+    questions.splice(index, 1);
+    saveQuestions();
+    showNotification("Question deleted");
+    renderQuestions();
+    if (currentQuestion === index) {
+      closeModal();
+      currentQuestion = null;
+    }
+    // Close all menus
+    document.querySelectorAll('.more-dropdown').forEach(m => m.style.display = 'none');
+  }
+}
+
+function toggleDarkMode() {
+  darkMode = !darkMode;
+  localStorage.setItem('darkMode', darkMode);
+  document.body.classList.toggle('dark-mode', darkMode);
+  document.getElementById('dark-mode-toggle').textContent = darkMode ? '☀️' : '🌙';
+}
+
+// Apply on load
+if (darkMode) {
+  document.body.classList.add('dark-mode');
+  document.getElementById('dark-mode-toggle').textContent = '☀️';
+}
+document.getElementById('dark-mode-toggle').onclick = toggleDarkMode;
+
+// Optional: Close menus when clicking anywhere else on the page
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.more-menu')) {
+    document.querySelectorAll('.more-dropdown').forEach(m => m.style.display = 'none');
+  }
+});
+
+function toggleLike(index, type = 'post', parentIndexes = []) {
+  let target;
+  if (type === 'post') target = questions[index];
+  else target = getComment(questions[index], parentIndexes);
+  
+  if (!target) return;
+  
+  target.liked = !target.liked;
+  target.likes += target.liked ? 1 : -1;
+  
+  showNotification(target.liked ? 'Liked!' : 'Like removed');
+  
+  saveQuestions();
+  renderQuestions();
+  if (currentQuestion !== null) openModal(currentQuestion);
+}
+
+function getComment(q, indexes) {
+  let c = q.comments[indexes[0]];
+  for (let i = 1; i < indexes.length; i++) {
+    c = c.replies[indexes[i]];
+  }
+  return c;
+}
+
+function openModal(index) {
+  currentQuestion = index;
+  const modal = document.getElementById('questionModal');
+  const q = questions[index];
+  
+  document.getElementById('modal-question').innerHTML = `
+    <div class='vote-box' onclick='toggleLike(${index},"post")'>👍 ${q.likes}</div>
+    <h3>${q.title}</h3>
+    <p>${q.desc}</p>
+    ${q.tags.map(t => `<span class='tag' onclick='filterTagClick("${t}")'>${t}</span>`).join('')}
+  `;
+
+  document.getElementById('modal-comments').innerHTML = renderComments(q.comments);
+
+  function renderComments(comments, parentIndexes = []) {
+  return comments.map((c, i) => {
+    const idx = [...parentIndexes, i];
+    const idxStr = idx.join('-');
+
+    let repliesHTML = '';
+    if (c.replies && c.replies.length > 0) {
+      repliesHTML = renderComments(c.replies, idx);
+    }
+
+    // Only Like, Reply, Report — no Edit!
+    const content = `
+      <div class='author'>${c.author}</div>
+      <div class='text'>${c.text}</div>
+      <div class='comment-actions' style="display:flex; gap:16px; font-size:13px; color:var(--accent); margin-top:8px; flex-wrap:wrap;">
+        <span onclick='toggleLike(${currentQuestion},"comment",[${idx}])' style="cursor:pointer;">Like (${c.likes})</span>
+        <span onclick='showReplyBox([${idx}])' style="cursor:pointer;">Reply</span>
+        <span onclick='reportComment(${currentQuestion},[${idx}])' style="cursor:pointer; color:#f87171;">Report</span>
+      </div>
+    `;
+
+    return `
+      <div class='comment ${c.reported ? 'reported' : ''}' style='margin-left:${20*idx.length}px; position:relative;'>
+        ${content}
+        <div class='reply-box' id='reply-box-${idxStr}' style='display:none; margin-top:12px;'>
+          <input type='text' placeholder='Type your reply...' id='reply-input-${idxStr}' />
+          <button onclick='addReply([${idx}])'>Reply</button>
         </div>
-        <p>2025 NOVACORP | All Rights Reserved | Supervised by : Dr. Mohamed Elgazzar & ENG. Monier Lawande</p>
-    </footer>
+        ${repliesHTML}
+      </div>`;
+  }).join('');
+
+
+  // Now call the correct renderComments
+  document.getElementById('modal-comments').innerHTML = renderComments(q.comments);
+
+  document.getElementById('main-comment-input').value = '';
+  
+  modal.style.display = 'flex';
+  setTimeout(() => modal.classList.add('show'), 10);
+}
+
+  function toggleCommentMenu(qIndex, path, event) {
+  event.stopPropagation(); // Prevent modal click from triggering
+
+  const idxStr = path.join('-');
+  const menuId = `comment-menu-${idxStr}`;
+  const menu = document.getElementById(menuId);
+
+  if (!menu) return; // safety check
+
+  const isOpen = menu.style.display === 'block';
+
+  // Close ALL comment menus first
+  document.querySelectorAll('.more-dropdown').forEach(m => {
+    m.style.display = 'none';
+  });
+
+  // Toggle this one
+  menu.style.display = isOpen ? 'none' : 'block';
+}
+
+// Close all menus when clicking anywhere outside
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.more-menu')) {
+    document.querySelectorAll('.more-dropdown').forEach(m => {
+      m.style.display = 'none';
+    });
+  }
+});
+
+function startEditComment(qIndex, path) {
+  editingComment = { questionIndex: qIndex, commentPath: path };
+  openModal(qIndex); // re-render comments
+}
+
+function saveEditComment(qIndex, path) {
+  const input = document.getElementById(`edit-comment-${path.join('-')}`);
+  if (!input) return;
+  const newText = input.value.trim();
+  if (!newText) return showNotification('Comment cannot be empty');
+
+  const comment = getComment(questions[qIndex], path);
+  comment.text = newText;
+  comment.timestamp = getCurrentTime(); // optional: update timestamp
+
+  editingComment = null;
+  saveQuestions();
+  showNotification('Comment updated!');
+  openModal(qIndex);
+}
+
+function cancelEditComment() {
+  editingComment = null;
+  openModal(currentQuestion);
+}
+
+function deleteComment(qIndex, path) {
+  if (!confirm('Are you sure you want to delete this comment?')) return;
+  
+  const parent = path.length === 1 
+    ? questions[qIndex] 
+    : getComment(questions[qIndex], path.slice(0, -1));
+  
+  const idx = path[path.length - 1];
+  parent.comments ? parent.comments.splice(idx, 1) : parent.replies.splice(idx, 1);
+
+  saveQuestions();
+  showNotification('Comment deleted');
+  openModal(qIndex);
+}
+
+  document.getElementById('modal-comments').innerHTML = renderComments(q.comments);
+  document.getElementById('main-comment-input').value = '';
+  
+  modal.style.display = 'flex';
+  setTimeout(() => modal.classList.add('show'), 10);
+}
+
+function closeModal() {
+  const modal = document.getElementById('questionModal');
+  modal.classList.remove('show');
+  setTimeout(() => modal.style.display = 'none', 300);
+}
+
+function showReplyBox(idx) {
+  const box = document.getElementById('reply-box-' + idx.join('-'));
+  box.style.display = box.style.display === 'none' ? 'flex' : 'none';
+}
+
+function addReply(idx) {
+  const input = document.getElementById('reply-input-' + idx.join('-'));
+  const text = input.value.trim();
+  if (!text) return;
+  
+  const parent = getComment(questions[currentQuestion], idx);
+  parent.replies.push({
+  author: 'You',
+  text: text,
+  likes: 0,
+  liked: false,
+  reported: false,
+  replies: [],
+  timestamp: getCurrentTime()
+});
+  
+  saveQuestions();
+  showNotification('Reply added!');
+  openModal(currentQuestion);
+}
+
+function addMainComment() {
+  const text = document.getElementById('main-comment-input').value.trim();
+  if (!text) return;
+  
+  questions[currentQuestion].comments.push({
+  author: 'You',
+  text: text,
+  likes: 0,
+  liked: false,
+  reported: false,
+  replies: [],
+  timestamp: getCurrentTime()
+});
+  
+  saveQuestions();
+  showNotification('Comment added!');
+  openModal(currentQuestion);
+}
+
+function reportComment(qIndex, parentIndexes) {
+  if (!confirm('Are you sure you want to report this comment?')) return;
+  const c = getComment(questions[qIndex], parentIndexes);
+  c.reported = !c.reported;
+  saveQuestions();
+  showNotification(c.reported ? 'Comment reported!' : 'Report removed');
+  openModal(qIndex);
+}
+
+function filterByTag() {
+  const val = document.getElementById('search-tag').value.trim().toLowerCase();
+  if (!val) renderQuestions();
+  else renderQuestions(questions.filter(q => q.tags.some(t => t.toLowerCase().includes(val))));
+}
+
+function filterTagClick(tag) {
+  document.getElementById('search-tag').value = tag;
+  filterByTag();
+}
+
+function renderPopularTags() {
+  const tagSet = new Set();
+  questions.forEach(q => q.tags.forEach(t => tagSet.add(t)));
+  
+  const container = document.getElementById('popular-tags');
+  container.innerHTML = '';
+  
+  Array.from(tagSet).forEach(t => {
+    const span = document.createElement('span');
+    span.className = 'tag';
+    span.innerText = t;
+    span.onclick = () => filterTagClick(t);
+    container.appendChild(span);
+  });
+}
+
+function clearAllData() {
+  if (confirm("Are you sure? This will delete ALL questions, comments, likes, etc. permanently!")) {
+    localStorage.removeItem('nuVolunteeringQuestions');
+    location.reload();
+  }
+}
+
+// Initial render
+renderQuestions();
+</script>
 </body>
 </html>
