@@ -1,0 +1,21 @@
+# NU ITCS Volunteering Hub – Official Branding & Vision
+
+**Project Name:** NU ITCS Volunteering Hub  
+**Tagline:** ITCS Safe Space Hub.
+
+**Official Colors**  
+- Primary Green: `#10B981` (Emerald)  
+- Primary Blue: `#3B82F6` (Blue)  
+- Accent Yellow: `#FBBF24` (Amber)
+
+**Mission**  
+A web platform designed for ITCS students, TAs, faculty members, and clubs to collaborate, share knowledge, and engage in academic or departmental volunteering opportunities.
+
+**Vision**  
+Encourage students to volunteer academically (helping peers in specific subjects) or non-academically (assisting in department-related activities like events or research), building a sense of community, support, and contribution.
+
+**Core Values**  
+- Peer-to-peer academic help  
+- Trust & credibility through endorsements  
+- Recognition for volunteering  
+- Safe & moderated environment
