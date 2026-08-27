@@ -1,0 +1,309 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "poppins",sans-serif;
+    text-decoration: none;
+}
+html, body{
+    height: 100%;
+    background-color: #B0C4DE;
+}
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+}
+.page-content{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 40px;
+}
+
+.navbar {
+    background: rgba(255, 255, 255, 0.95); /* solid but soft */
+    padding: 15px;
+    border-bottom: 3px solid #f3b94d;     /* your yellow accent */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navdiv{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+}
+ul{
+    flex-grow: 2;
+    text-align: center;
+}
+
+li {
+    list-style: none;
+    display: inline-block;
+    margin-right: 15px; /* space between bubbles */
+}
+
+li a {
+    display: inline-block;       /* so padding works properly */
+    background-color: #f4b53e;   /* yellow bubble */
+    color: #fff;                 /* white text */
+    font-size: 18px;
+    font-weight: bold;
+    padding: 8px 20px;           /* top-bottom, left-right spacing */
+    border-radius: 25px;         /* makes it pill-shaped */
+    text-align: center;
+    transition: 0.3s;            /* smooth hover effect */
+}
+
+li a:hover {
+    background-color: #e69500;   /* slightly darker on hover */
+    color: #fff;
+    transform: scale(1.05);      /* subtle pop effect */
+}
+
+
+.explore-section{
+    flex: 1;
+    padding: 50px 100px;
+}
+.container{
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.section-title{
+    font-size: 2em;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 30px;
+}
+.search-bar-container{
+    display: flex;
+    align-items: center;
+    margin-bottom: 50px;
+    gap: 10px;
+}
+.search-input{
+    flex-grow: 1;
+    padding: 12px 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1em;
+    border: 2px solid #ccc;
+    max-width: 85%;
+}
+
+.search-area {
+    /* display: flex; */
+    flex-direction: column;
+    gap: 10px; /* controls vertical space between search and ask button */
+}
+
+
+.search-button{
+    padding: 12px 25px;
+    background-color: #000;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.ask-btn{
+    padding: 9px 20px;        
+    font-size: 1em;
+    border-radius: 8px;
+}
+
+.search-button:hover{
+    background-color: #efc572;
+}
+
+#questionsContainer{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 20px; 
+    padding: 40px 0 20px 0px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.question-card{
+    padding: 25px;
+    background-color: #f7fbf8;
+    border-radius: 12px;
+    border: 1px solid #e0f2f1;
+    box-shadow: 0 0.5px 5px #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 150px;
+    margin-top: 10px;
+}
+.question-title{
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+.question-meta{
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 15px;
+}
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.view-link {
+    background: none;
+    border: none;
+    color: #0364a0;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+    background: B0C4DE;
+}
+
+.footer {
+    position: relative;
+    width: 100%;
+    background: #f5f7fa;
+    min-height: 100px;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 0;
+    overflow: visible;
+    border-top: 3px solid #f4b53e;
+    z-index: 1;
+}
+
+.footer p {
+    position: relative;
+    margin-top: 120px;
+    text-align: center;
+    font-size: 1rem;
+    z-index: 2; 
+    color: #f3b94d;
+    margin: 15px 0;
+}
+
+.clickable {
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.clickable:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.view-container {
+    padding: 50px 100px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.back-btn {
+    background: #fba203;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.answer-card {
+    background: white;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 10px;
+    border-left: 4px solid #fba203; /* Reddit-style thread line */
+}
+.search-input:focus {
+    border: 2px solid #fba203;
+    outline: none;
+}
+
+#askTag {
+    transition: 0.3s;
+}
+
+#askTag:focus {
+    border-color: #fba203;
+    background-color: #fffdf9;
+    outline: none;
+}
+.primary-btn {
+    padding: 12px 35px;
+    background: #000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.tag-label {
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.85em;
+    background: #e0f2f1;
+    color: #0364a0;
+}
+
+.answer-card {
+    background: #f9f9f9;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 10px;
+    border-left: 4px solid #fba203;
+}
+
+/* Ensure the footer stays down */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.page-content {
+    flex: 1 0 auto;
+}
+.footer {
+    flex-shrink: 0;
+}
